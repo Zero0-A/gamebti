@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f6f4ec">
+  <meta name="description" content="打游戏这件事，藏不住你的性格。16 道游戏情景题，解锁你的 GameBTI 玩家人格。">
+  <title>GameBTI — 游戏里，你是哪种人？</title>
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <script src="data.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="header wrap">
+    <a href="#" class="brand" aria-label="GameBTI 首页"><svg viewBox="0 0 34 30" aria-hidden="true"><path d="M7 3h20v4h4v19h-8v-5H11v5H3V7h4z" fill="currentColor"/><path d="M9 9v9m-4-5h9" stroke="#f6f4ec" stroke-width="3"/><path d="M22 11h3v3h-3zm4 5h3v3h-3z" fill="#f6f4ec"/></svg><span>game<span class="brand-bti">bti</span><span class="brand-star">✳</span></span></a>
+    <nav aria-label="主导航"><button data-action="collection">玩家图鉴 <span class="nav-count">16</span></button><button data-action="about">这是什么？ <span class="out-arrow">↗</span></button></nav>
+    <span class="nav-note"><i></i> 为每一种玩家，留个位置</span>
+  </header>
+  <main id="main" tabindex="-1">
+    <section id="home" class="screen wrap">
+      <div class="hero">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="tiny-cross">✳</span> 玩家人格鉴定所 <span class="eyebrow-line"></span><span class="mono">VOL. 001</span></div>
+          <h1>现实太复杂，<br>游戏里<span class="red">你是谁<span class="question-mark">？</span></span></h1>
+          <p class="hero-desc">有人开团，有人种田，有人逛了三小时还没出新手村。<br>你的游戏习惯，早就把你出卖了。</p>
+          <div class="hero-actions"><button class="button button-dark" id="start-button" data-action="start">测测我的玩家人格 <span>↗</span></button><span class="play-note"><span class="note-arrow">↶</span> 不用下载，即刻开玩</span></div>
+          <div class="hero-meta"><span><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7"/><path d="M10 5v5l3 2"/></svg> 约 3 分钟</span><span><svg viewBox="0 0 20 20"><path d="M5 3h10v14H5zM8 7h4m-4 3h4m-4 3h3"/></svg> 16 道情景题</span><span><span class="pixel-heart">♥</span> 没有标准答案</span></div>
+          <button id="resume-button" class="resume" hidden>上次还没打完？继续测试 →</button>
+        </div>
+        <div class="hero-art" aria-label="三个像素小怪物在游戏世界中相遇的插画">
+          <div class="art-top"><span class="mono">PLAYER SELECT</span><span class="art-online"><i></i> READY TO PLAY</span></div>
+          <div class="art-grid"></div>
+          <div class="art-spark spark-one">✦</div><div class="art-spark spark-two">+</div><div class="art-spark spark-three">✧</div>
+          <div class="floating-label label-one"><i></i> 快乐优先</div><div class="floating-label label-two">有自己的游戏节奏 <span>↙</span></div>
+          <svg class="scene" viewBox="0 0 520 365" role="img" aria-label="橙色像素玩家拿着手柄，身边有绿色和紫色小伙伴" shape-rendering="crispEdges">
+            <path d="M42 294h436v4H42zM76 310h365v2H76z" fill="#ddaf97"/>
+            <path d="M69 258h76v13H69zm9 13h57v8H78z" fill="#d9bea0"/><path d="M66 204h11v-12h11v-12h43v12h11v12h11v49h-11v12H77v-12H66z" fill="#a4bfa0"/><path d="M78 180v-12h12v-12h12v24m30 0v-24h12v36" fill="#a4bfa0"/><path d="M86 211h10v16H86zm36 0h10v16h-10z" fill="#303d31"/><path d="M100 239h18v5h-18z" fill="#5e7c58"/><path d="M66 235H55v12h11m87-12h11v12h-11" fill="#a4bfa0"/>
+            <path d="M350 275h94v12h-94zm11 12h73v6h-73z" fill="#d9bea0"/><path d="M358 198h13v-13h52v13h13v14h12v51h-12v13h-78v-13h-12v-51h12z" fill="#a393ca"/><path d="M371 186v-13h13v-13h13v26m26 0v-13h13v26" fill="#a393ca"/><path d="M369 219h12v16h-12zm42 0h12v16h-12z" fill="#342e45"/><path d="M384 244h25v6h-25z" fill="#6a598f"/>
+            <path d="M159 293h184v14H159zm18 14h149v8H177z" fill="#bf8e74"/>
+            <path d="M185 127h18v-18h88v18h18v18h18v128h-18v20H185v-20h-18V145h18z" fill="#e77b41"/>
+            <path d="M202 110V92h18V74h18v36m52 1V74h18v53" fill="#e77b41"/>
+            <path d="M185 146h18v-18h87v18h18v95h-18v18h-87v-18h-18z" fill="#f39452"/>
+            <path d="M207 159h18v32h-18zm62 0h18v32h-18z" fill="#382d2a"/><path d="M211 160h6v10h-6zm62 0h6v10h-6z" fill="#fff4db"/>
+            <path d="M233 203h27v9h-27z" fill="#913e2b"/><path d="M191 194h20v8h-20zm91 0h20v8h-20z" fill="#e87545"/>
+            <path d="M185 262h28v36h-28zm95 0h29v36h-29z" fill="#cb6236"/>
+            <path d="M203 229h88v-8h18v8h9v36h-27v-9h-61v9h-27v-9h-9v-27z" fill="#39372f"/>
+            <path d="M219 234v19m-9-10h27" stroke="#f8ecce" stroke-width="7"/><path d="M287 233h7v7h-7zm10 11h7v7h-7z" fill="#f39452"/>
+            <path d="M171 221h22v18h18v18h-22v-9h-18zm139 0h21v27h-21v9h-17v-18h17z" fill="#ed8748"/>
+            <path d="M53 275h5v-11h5v11h6v5H53zm400-121h7v-7h7v7h7v7h-7v7h-7v-7h-7z" fill="#7f986c"/>
+            <path d="M126 122h7v-7h7v7h7v7h-7v7h-7v-7h-7z" fill="#fff9e8"/><path d="M352 101h6v-6h6v6h6v6h-6v6h-6v-6h-6z" fill="#ed955b"/>
+            <path d="M395 302h6v-17h6v17h6v-9h6v15h-24zm-286-9h6v-13h6v13h6v6h-18z" fill="#b1a27c"/>
+          </svg>
+          <div class="art-bottom"><span class="mono">YOU ARE THE MAIN CHARACTER.</span><span class="art-keys">← ↑ ↓ →</span></div>
+          <div class="sticker"><span>天生我材<br>必有<span class="sticker-red">局</span></span><svg viewBox="0 0 30 30"><path d="M4 16l8 8L26 5" fill="none" stroke="currentColor" stroke-width="3"/></svg></div>
+        </div>
+      </div>
+      <div class="ticker" aria-label="每一种玩法都算数"><span>不止 E 人和 I 人</span><span class="ticker-star">✳</span><span>电子世界，真实的你</span><span class="ticker-star">✳</span><span>菜也有菜的性格</span><span class="ticker-star">✳</span><span>每一种玩法都算数</span><span class="ticker-star">✳</span><span class="mono">JUST PLAY YOUR WAY</span></div>
+      <section class="players-section" aria-labelledby="players-heading"><div class="section-heading"><div><div class="section-kicker mono">MEET YOUR PEOPLE</div><h2 id="players-heading">总有一种玩家，<span>像极了你。</span></h2></div><button data-action="collection" class="text-link">翻翻 16 型玩家图鉴 <span>↗</span></button></div><div class="player-grid" id="featured-players"></div></section>
+      <div class="how-it-works"><span><b class="mono">01</b> 把自己放进游戏</span><span class="step-line"></span><span><b class="mono">02</b> 跟着第一反应选</span><span class="step-line"></span><span><b class="mono">03</b> 领取你的玩家身份证</span><span class="how-note">不查战绩，也不查成分。:)</span></div>
+    </section>
+    <section id="quiz" class="screen wrap quiz-screen" hidden></section>
+    <section id="result" class="screen wrap result-screen" hidden></section>
+  </main>
+  <footer class="footer wrap"><a class="footer-brand" href="#">gamebti<span>✳</span></a><span>认真玩游戏，随便做自己。</span><span class="footer-right">一个关于游戏的趣味测试 · 仅供娱乐 <span class="mono">© 2026</span></span></footer>
+  <dialog id="collection-dialog" class="collection-dialog"><div class="dialog-top"><div><span class="section-kicker mono">THE PLAYER ENCYCLOPEDIA</span><h2>玩家图鉴<span class="red">.16</span></h2></div><button class="close-button" data-action="close" aria-label="关闭图鉴">×</button></div><p class="dialog-desc">这局你是什么角色？先来认认人。</p><div class="collection-filters" id="collection-filters"><button class="active" data-filter="all">全部玩家 <span>16</span></button><button data-filter="analyst">硬核脑力组</button><button data-filter="diplomat">感性体验派</button><button data-filter="sentinel">靠谱行动派</button><button data-filter="explorer">快乐自由人</button></div><div id="collection-grid" class="collection-grid"></div></dialog>
+  <dialog id="about-dialog" class="about-dialog"><button class="close-button" data-action="close" aria-label="关闭说明">×</button><span class="section-kicker mono">A LITTLE ABOUT GAMEBTI</span><h2>看你怎么玩，<br>猜你是哪一款。</h2><p>同一个游戏，有人研究配装，有人研究风景。有人一输就复盘，有人一赢就下班。</p><p>GameBTI 借用了 MBTI 的四维框架，把它换成了 16 道游戏里的小选择：组队还是独行、实战还是探索、胜负还是共情、规划还是随性。</p><p>它不是心理诊断，也不给游戏水平打分。结果只反映这次选择里的倾向，换个游戏、换种心情，都可能换一个你。</p><div class="about-note">不用太当真。但如果被说中了，也欢迎认领。</div><button class="button button-dark" data-action="start">好，让我试试 <span>↗</span></button></dialog>
+  <div id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

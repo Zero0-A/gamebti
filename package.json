@@ -1,0 +1,10 @@
+{
+  "name": "gamebti",
+  "version": "1.0.0",
+  "private": true,
+  "description": "GameBTI 趣味游戏人格测试",
+  "scripts": {
+    "start": "node server.mjs",
+    "check": "node --check dist/app.js && node --check dist/data.js && node verify.mjs"
+  }
+}
