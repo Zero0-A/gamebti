@@ -2,16 +2,17 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#f6f4ec">
   <meta name="description" content="打游戏这件事，藏不住你的性格。16 道游戏情景题，解锁你的 GameBTI 玩家人格。">
   <title>GameBTI — 游戏里，你是哪种人？</title>
   <link rel="icon" href="icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="mobile.css">
   <script src="data.js" defer></script>
   <script src="app.js" defer></script>
 </head>
-<body>
+<body data-screen="home">
   <header class="header wrap">
     <a href="#" class="brand" aria-label="GameBTI 首页"><svg viewBox="0 0 34 30" aria-hidden="true"><path d="M7 3h20v4h4v19h-8v-5H11v5H3V7h4z" fill="currentColor"/><path d="M9 9v9m-4-5h9" stroke="#f6f4ec" stroke-width="3"/><path d="M22 11h3v3h-3zm4 5h3v3h-3z" fill="#f6f4ec"/></svg><span>game<span class="brand-bti">bti</span><span class="brand-star"><img class="whale-mark" src="assets/whale-mark.svg" width="24" height="18" alt=""></span></span></a>
     <nav aria-label="主导航"><button data-action="collection">玩家图鉴 <span class="nav-count">16</span></button><button data-action="about">这是什么？ <span class="out-arrow">↗</span></button></nav>
