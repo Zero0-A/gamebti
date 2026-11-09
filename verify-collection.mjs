@@ -1,0 +1,24 @@
+import vm from 'node:vm';
+import {readFileSync}from 'node:fs';
+import assert from 'node:assert/strict';
+const context={window:{},URL,URLSearchParams};
+for(const file of ['data.js','collection.js'])vm.runInNewContext(readFileSync(new URL('./dist/'+file,import.meta.url),'utf8'),context);
+const types=context.window.GameData.types,{create,parseGift,giftURL}=context.window.GameCollection;
+const memory=new Map(),storage={getItem:key=>memory.get(key)??null,setItem:(key,value)=>memory.set(key,value)};
+let book=create(types,()=>storage);
+assert.equal(book.codes().length,0);
+assert.equal(book.unlock('INTJ','self').added,true);
+assert.equal(book.unlock('ENFP','friend').added,true);
+assert.equal(book.unlock('ENFP','friend').added,false);
+assert.equal(book.codes().length,2);
+assert.equal(book.source('INTJ').self,true);assert.equal(book.source('INTJ').friend,false);
+assert.equal(book.source('ENFP').friend,true);assert.equal(book.source('ENFP').self,false);
+book=create(types,()=>storage);assert.equal(book.codes().length,2);
+const secondTab=create(types,()=>storage);book.unlock('INFP','friend');secondTab.unlock('ESTP','self');
+book=create(types,()=>storage);assert.equal(book.codes().length,4);
+book.unlock('INTJ','friend');assert.equal(book.source('INTJ').self,true);assert.equal(book.source('INTJ').friend,true);assert.equal(book.codes().length,4);
+for(const code of Object.keys(types)){const url=giftURL('https://example.com/#old',code,types);assert.equal(parseGift(new URL(url).hash,types),code);assert.equal(new URL(url).hash,'#meet='+code);}
+for(const hash of ['#meet=constructor','#meet=__proto__','#meet=XXXX','#meet=ENFP&meet=INTJ','#meet=<script>','#other=ENFP'])assert.equal(parseGift(hash,types),null);
+assert.throws(()=>book.unlock('constructor','friend'));assert.throws(()=>book.unlock('INTJ','unknown'));
+const unavailable=create(types,()=>{throw Error('storage unavailable');});assert.equal(unavailable.unlock('INTJ','self').persisted,false);assert.equal(unavailable.has('INTJ'),true);
+console.log('Verified: locked initial collection, persistence, self/friend provenance, duplicate gifts, tab merging, valid share links and invalid-link rejection.');

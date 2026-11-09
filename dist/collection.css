@@ -1,0 +1,57 @@
+.collection-count{font-family:Arial,sans-serif;font-size:20px;letter-spacing:-.5px;margin-left:10px;white-space:nowrap}
+.collection-progress{height:5px;border-radius:8px;background:#e1e4d9;margin:0 0 20px;overflow:hidden}
+.collection-progress span{display:block;height:100%;background:#4d6bfe;border-radius:8px;transition:width .25s}
+.collection-local-note{font-size:11px;line-height:1.9;color:#808978;margin:22px 0 0;border-top:1px solid var(--line);padding-top:16px}
+.collection-empty{grid-column:1/-1;text-align:center;border:1px dashed #bfc8b6;border-radius:12px;padding:35px 26px;background:#eff0e6}
+.empty-lock{width:28px;height:35px;margin:0 auto 18px;color:#80947b}
+.empty-lock svg,.locked-glyph svg{width:100%;height:100%}
+.collection-empty h3{font-size:21px;margin:0 0 12px;line-height:1.5}
+.collection-empty p{font-size:13px;line-height:1.9;color:#737e68;max-width:410px;margin:0 auto 22px}
+.collection-empty .button{font-size:14px;padding:15px 23px}
+.card-source{display:inline-block;font-size:9px;line-height:1.7;color:#56684c;margin-top:10px;padding:3px 7px;background:#ffffff50;border:1px solid #292d2610;border-radius:4px}
+.card-locked{background:#eceee4;color:#8a9680;text-align:center;border:1px dashed #bdc7b4;cursor:default;min-height:220px}
+.card-locked:hover{transform:none;box-shadow:none}
+.card-locked .card-code{letter-spacing:3px}.card-locked .card-top{color:#98a18f}
+.locked-glyph{width:29px;height:35px;margin:25px auto 19px;color:#9eaa94}
+.card-locked h3{font-size:17px;margin:0 0 9px;font-weight:500}
+.card-locked .card-quote{color:#8a957e;border:0;margin:0;padding:0;font-size:11px;line-height:1.9}
+.gift-dialog{width:min(440px,calc(100% - 28px));padding:24px;border-radius:16px;text-align:center}
+.gift-dialog .dialog-top{align-items:center;margin-bottom:8px;text-align:left}
+.gift-dialog .section-kicker{font-size:9px;letter-spacing:.9px}
+.gift-eyebrow{font-size:13px;color:#727d67;margin:10px 0 18px;line-height:1.8}
+.gift-card{border-radius:12px;padding:20px;border:1px solid #292d2610}
+.gift-code{display:block;font-size:25px;letter-spacing:4px;font-weight:700}
+.gift-character{width:148px;height:148px;margin:8px auto 0}
+.gift-card h2{font-size:25px;line-height:1.5;margin:0 0 8px}
+.gift-card>p{font-size:13px;line-height:1.8;margin:0;color:#58684d}
+.gift-description{font-size:13px;line-height:1.9;color:#738068;margin:20px 0}
+.gift-dialog>.gift-content{width:100%}
+#gift-content>.button{width:100%;justify-content:space-between;min-height:50px}
+#gift-content>.text-link{font-size:12px;min-height:44px;margin-top:9px}
+.card-preview-link{display:block;font-size:13px;line-height:1.8;width:100%;text-align:center;min-height:44px;margin-top:10px;color:#4d6bfe}
+@media(max-width:640px){
+  .collection-count{font-size:19px;margin-left:8px}
+  .collection-dialog .dialog-top h2{font-size:23px}
+  .collection-local-note{font-size:12px;line-height:1.9;margin-top:24px}
+  .collection-empty{padding:31px 22px}
+  .collection-empty h3{font-size:21px;letter-spacing:-.6px}
+  .collection-empty p{font-size:14px;line-height:1.9}
+  .collection-empty .button{width:100%;font-size:15px;min-height:52px;justify-content:space-between}
+  .card-source{font-size:11px;margin-top:9px;padding:3px 6px;text-align:center}
+  .card-locked,.collection-grid .card-locked{min-height:238px;padding:15px 12px}
+  .card-locked h3,.collection-grid .card-locked h3{font-size:16px;font-weight:500}
+  .card-locked .card-quote,.collection-grid .card-locked .card-quote{font-size:12px;line-height:1.9;margin:0;padding:0}
+  .gift-dialog{width:calc(100% - 20px);max-width:440px;max-height:94dvh;padding:20px;overflow-y:auto;border-radius:18px}
+  .gift-dialog .dialog-top{gap:10px}
+  .gift-dialog .dialog-top{position:sticky;top:-20px;background:var(--bg);z-index:2;padding:4px 0}
+  .gift-eyebrow{font-size:14px;margin:8px 0 16px}
+  .gift-card{padding:18px}
+  .gift-character{width:138px;height:138px}
+  .gift-card h2{font-size:25px}
+  .gift-card>p{font-size:14px}
+  .gift-description{font-size:14px;margin:17px 0;line-height:1.8}
+  #gift-content>.button{font-size:16px;border-radius:9px;padding:15px 18px;min-height:52px}
+  #gift-content>.text-link{font-size:14px;line-height:1.8;margin-top:12px}
+  .card-preview-link{font-size:14px}
+}
+@media(max-width:359px){.collection-dialog .dialog-top h2{font-size:21px}.collection-count{font-size:17px}.gift-dialog{padding:16px}.gift-card{padding:14px}.gift-character{width:115px;height:115px}.gift-description{font-size:13px}}

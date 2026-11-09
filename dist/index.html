@@ -9,13 +9,15 @@
   <link rel="icon" href="icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="mobile.css">
+  <link rel="stylesheet" href="collection.css">
   <script src="data.js" defer></script>
+  <script src="collection.js" defer></script>
   <script src="app.js" defer></script>
 </head>
 <body data-screen="home">
   <header class="header wrap">
     <a href="#" class="brand" aria-label="GameBTI 首页"><svg viewBox="0 0 34 30" aria-hidden="true"><path d="M7 3h20v4h4v19h-8v-5H11v5H3V7h4z" fill="currentColor"/><path d="M9 9v9m-4-5h9" stroke="#f6f4ec" stroke-width="3"/><path d="M22 11h3v3h-3zm4 5h3v3h-3z" fill="#f6f4ec"/></svg><span>game<span class="brand-bti">bti</span><span class="brand-star"><img class="whale-mark" src="assets/whale-mark.svg" width="24" height="18" alt=""></span></span></a>
-    <nav aria-label="主导航"><button data-action="collection">玩家图鉴 <span class="nav-count">16</span></button><button data-action="about">这是什么？ <span class="out-arrow">↗</span></button></nav>
+    <nav aria-label="主导航"><button data-action="collection">我的图鉴 <span class="nav-count" id="nav-unlocked">0/16</span></button><button data-action="about">这是什么？ <span class="out-arrow">↗</span></button></nav>
     <span class="nav-note"><i></i> 为每一种玩家，留个位置</span>
   </header>
   <main id="main" tabindex="-1">
@@ -40,15 +42,16 @@
         </div>
       </div>
       <div class="ticker" aria-label="每一种玩法都算数"><span>不止 E 人和 I 人</span><span class="ticker-star"><img class="whale-mark" src="assets/whale-mark.svg" width="24" height="18" alt=""></span><span>电子世界，真实的你</span><span class="ticker-star"><img class="whale-mark" src="assets/whale-mark.svg" width="24" height="18" alt=""></span><span>菜也有菜的性格</span><span class="ticker-star"><img class="whale-mark" src="assets/whale-mark.svg" width="24" height="18" alt=""></span><span>每一种玩法都算数</span><span class="ticker-star"><img class="whale-mark" src="assets/whale-mark.svg" width="24" height="18" alt=""></span><span class="mono">JUST PLAY YOUR WAY</span></div>
-      <section class="players-section" aria-labelledby="players-heading"><div class="section-heading"><div><div class="section-kicker mono">MEET YOUR PEOPLE</div><h2 id="players-heading">总有一种玩家，<span>像极了你。</span></h2></div><button data-action="collection" class="text-link">翻翻 16 型玩家图鉴 <span>↗</span></button></div><div class="player-grid" id="featured-players"></div></section>
+      <section class="players-section" aria-labelledby="players-heading"><div class="section-heading"><div><div class="section-kicker mono">YOUR PLAYER COLLECTION</div><h2 id="players-heading">你的玩家图鉴，<span>慢慢收集。</span></h2></div><button data-action="collection" class="text-link">打开我的图鉴 <span>↗</span></button></div><div class="player-grid" id="featured-players"></div></section>
       <div class="how-it-works"><span><b class="mono">01</b> 把自己放进游戏</span><span class="step-line"></span><span><b class="mono">02</b> 跟着第一反应选</span><span class="step-line"></span><span><b class="mono">03</b> 领取你的玩家身份证</span><span class="how-note">不查战绩，也不查成分。:)</span></div>
     </section>
     <section id="quiz" class="screen wrap quiz-screen" hidden></section>
     <section id="result" class="screen wrap result-screen" hidden></section>
   </main>
   <footer class="footer wrap"><a class="footer-brand" href="#">gamebti<span><img class="whale-mark" src="assets/whale-mark.svg" width="24" height="18" alt=""></span></a><span>认真玩游戏，随便做自己。</span><span class="footer-right">一个关于游戏的趣味测试 · 仅供娱乐 <span class="mono">© 2026</span></span></footer>
-  <dialog id="collection-dialog" class="collection-dialog"><div class="dialog-top"><div><span class="section-kicker mono">THE PLAYER ENCYCLOPEDIA</span><h2>玩家图鉴<span class="red">.16</span></h2></div><button class="close-button" data-action="close" aria-label="关闭图鉴">×</button></div><p class="dialog-desc">这局你是什么角色？先来认认人。</p><div class="collection-filters" id="collection-filters"><button class="active" data-filter="all">全部玩家 <span>16</span></button><button data-filter="analyst">硬核脑力组</button><button data-filter="diplomat">感性体验派</button><button data-filter="sentinel">靠谱行动派</button><button data-filter="explorer">快乐自由人</button></div><div id="collection-grid" class="collection-grid"></div></dialog>
-  <dialog id="about-dialog" class="about-dialog"><button class="close-button" data-action="close" aria-label="关闭说明">×</button><span class="section-kicker mono">A LITTLE ABOUT GAMEBTI</span><h2>看你怎么玩，<br>猜你是哪一款。</h2><p>同一个游戏，有人研究配装，有人研究风景。有人一输就复盘，有人一赢就下班。</p><p>GameBTI 借用了 MBTI 的四维框架，把它换成了 16 道游戏里的小选择：组队还是独行、实战还是探索、胜负还是共情、规划还是随性。</p><p>它不是心理诊断，也不给游戏水平打分。结果只反映这次选择里的倾向，换个游戏、换种心情，都可能换一个你。</p><div class="about-note">不用太当真。但如果被说中了，也欢迎认领。</div><button class="button button-dark" data-action="start">好，让我试试 <span>↗</span></button></dialog>
+  <dialog id="collection-dialog" class="collection-dialog" aria-labelledby="collection-title"><div class="dialog-top"><div><span class="section-kicker mono">YOUR PLAYER COLLECTION</span><h2 id="collection-title">我的玩家图鉴<span class="collection-count red" id="collection-count">0/16</span></h2></div><button class="close-button" data-action="close" aria-label="关闭图鉴">×</button></div><p class="dialog-desc">测一次，认识自己。收一张，认识朋友。</p><div class="collection-progress" aria-label="人格收集进度"><span id="collection-progress-fill"></span></div><div class="collection-filters" id="collection-filters"><button class="active" data-filter="unlocked">已解锁 <span>0</span></button><button data-filter="self">我测出的 <span>0</span></button><button data-filter="friend">朋友送来的 <span>0</span></button><button data-filter="all">全部格子 <span>16</span></button></div><div id="collection-grid" class="collection-grid"></div><p class="collection-local-note">图鉴保存在当前浏览器。分享你的人格链接，让朋友也收一张。</p></dialog>
+  <dialog id="gift-dialog" class="gift-dialog" aria-labelledby="gift-title"><div class="dialog-top"><span class="section-kicker mono">A PLAYER YOU SHOULD MEET</span><button class="close-button" data-action="close" aria-label="关闭朋友的人格卡">×</button></div><div id="gift-content"></div></dialog>
+  <dialog id="about-dialog" class="about-dialog"><button class="close-button" data-action="close" aria-label="关闭说明">×</button><span class="section-kicker mono">A LITTLE ABOUT GAMEBTI</span><h2>看你怎么玩，<br>猜你是哪一款。</h2><p>同一个游戏，有人研究配装，有人研究风景。有人一输就复盘，有人一赢就下班。</p><p>GameBTI 借用了 MBTI 的四维框架，把它换成了 16 道游戏里的小选择：组队还是独行、实战还是探索、胜负还是共情、规划还是随性。</p><p>它不是心理诊断，也不给游戏水平打分。结果只反映这次选择里的倾向，换个游戏、换种心情，都可能换一个你。</p><div class="about-note">测完会解锁自己的人格。把结果链接发给朋友，对方就能把你的人格收进图鉴。</div><button class="button button-dark" data-action="start">好，让我试试 <span>↗</span></button></dialog>
   <div id="toast" role="status" aria-live="polite"></div>
 </body>
 </html>
