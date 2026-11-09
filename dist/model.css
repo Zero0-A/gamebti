@@ -1,0 +1,48 @@
+.card-team,.identity-card.card-team{background:#dce7f0}.card-self,.identity-card.card-self{background:#e1d9ef}.card-motivation,.identity-card.card-motivation{background:#eee2ba}.card-engagement,.identity-card.card-engagement{background:#dbe7d4}.card-interaction,.identity-card.card-interaction{background:#f0d5c6}.card-content,.identity-card.card-content{background:#d5e9e8}.card-completion,.identity-card.card-completion{background:#ebe4ce}
+.quiz-phase{font-size:12px;display:flex;align-items:center;gap:13px}.quiz-phase b{font-size:12px;font-weight:400}
+.frequency-answers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.frequency-answers .answer{min-height:76px;font-size:15px;line-height:1.7;gap:10px;padding:15px}
+.frequency-answers .answer.selected{padding:14px;border-width:2px}
+.answer-na{border-style:dashed;color:#76846b;background:#f0f1e8}
+.first-question-note,.legacy-notice{font-size:12px;line-height:1.9;color:#6e7a65;padding:13px 15px;border:1px solid #d8dfce;border-radius:7px;background:#eef1e6;margin:0 0 21px}
+.legacy-notice{margin:16px 0 0;max-width:470px}
+.result-type-picker{display:flex;flex-wrap:wrap;justify-content:center;gap:9px;margin:0 auto 24px;max-width:800px}
+.result-type-picker button{padding:10px 16px;min-height:42px;border:1px solid #d0d8c6;background:#f4f5ec;border-radius:6px;font-size:13px}
+.result-type-picker button.active{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.identity-en{font-size:11px;line-height:1.8;letter-spacing:.3px}
+.identity-tags span{line-height:1.8;font-size:11px;max-width:100%;overflow-wrap:break-word}
+.evidence-section{margin:22px 0;padding:17px;background:#e9ede1;border-radius:8px}
+.evidence-section h3{margin:0 0 12px}.evidence-section p{font-size:12px;line-height:1.9;margin:12px 0;color:#68755d}
+.evidence-section p>span{display:inline-block;vertical-align:baseline;font-size:11px;line-height:1.7;margin-right:8px;padding:1px 7px;background:#d9e1cf;color:#526347;border-radius:4px}
+.result-habits>p{font-size:13px;line-height:2;color:#6e7c60;margin:0 0 23px}
+.result-extra-labels{border-top:1px solid var(--line);margin:25px 0 0;padding-top:22px}
+.result-extra-labels>p{font-size:13px;line-height:2;color:#7b866f}.extra-label{padding:16px;border:1px solid #d8dece;background:#f1f2e8;border-radius:8px;margin:12px 0}
+.extra-label>span{font-size:10px;color:#7c896e}.extra-label h4{font-size:15px;margin:7px 0}.extra-label p{font-size:12px;line-height:1.9;color:#707f60;margin:0 0 9px}.extra-label small{font-size:11px;line-height:1.8;color:#859173;display:block}
+.insufficient-result{max-width:650px;margin:30px auto;padding:27px;border:1px solid #d3ddc7;background:#edf1e5;border-radius:12px}.insufficient-result h3{font-size:20px;line-height:1.6}.insufficient-result>p{font-size:14px;line-height:2;color:#6b7b5c}.insufficient-result>.button{margin-top:22px}.insufficient-result>.text-link{display:block;margin:13px auto 0}
+.share-copy{width:100%;min-height:155px;border:1px solid #d0d3c3;background:#fffdf5;border-radius:5px;padding:12px;font:inherit;font-size:16px;line-height:1.8}
+.type-preview-detail h4{font-size:13px;line-height:1.8;margin:17px 0 8px}
+.card-sub{letter-spacing:.2px}
+@media(max-width:640px){
+  .hero-meta{gap:8px 13px;font-size:10px}.quiz-phase{font-size:12px;gap:8px}.quiz-phase b{font-size:12px}
+  .frequency-answers{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .frequency-answers .answer{min-height:62px;font-size:15px;padding:13px 11px;gap:9px;border-radius:9px}
+  .frequency-answers .answer.selected{padding:12px 10px}
+  .frequency-answers .answer-key{width:23px;min-width:23px;height:25px;font-size:11px}
+  .answer-na{font-size:13px!important}
+  .first-question-note{font-size:12px;padding:11px 13px;margin-bottom:19px}
+  .legacy-notice{font-size:12px;margin-top:15px}
+  .result-type-picker{justify-content:flex-start;gap:8px;margin-bottom:23px}
+  .result-type-picker button{min-height:44px;font-size:14px;padding:10px 13px}
+  .result-heading h2{font-size:24px;letter-spacing:-.7px}.result-heading p{font-size:13px}
+  .identity-en{font-size:11px;line-height:1.8;letter-spacing:.3px}
+  .identity-code{font-size:48px;letter-spacing:5px}.identity-tags span{font-size:12px;line-height:1.8}
+  .result-detail h3{font-size:18px;line-height:1.6}
+  .evidence-section{padding:17px;margin:23px 0}.evidence-section p{font-size:14px;line-height:1.9}.evidence-section p>span{font-size:12px}
+  .result-habits>p{font-size:14px;line-height:2}
+  .result-extra-labels h3{font-size:18px}.result-extra-labels>p{font-size:14px}
+  .extra-label{padding:17px}.extra-label>span{font-size:12px}.extra-label h4{font-size:17px}.extra-label p{font-size:14px;line-height:1.9}.extra-label small{font-size:12px;line-height:1.9}
+  .insufficient-result{padding:21px}.insufficient-result h3{font-size:21px}.insufficient-result>p{font-size:15px}
+  .insufficient-result>.button{min-height:52px;font-size:15px;width:100%}.insufficient-result>.text-link{min-height:44px;font-size:14px}
+  .type-preview-detail h4{font-size:15px}
+}
+@media(max-width:359px){.frequency-answers .answer{font-size:14px;gap:7px;padding-inline:9px}.frequency-answers .answer.selected{padding-inline:8px}.question-title{font-size:21px}.identity-tags span{font-size:11px}.result-heading h2{font-size:22px}}

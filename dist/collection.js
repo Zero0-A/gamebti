@@ -1,6 +1,6 @@
 'use strict';
 window.GameCollection=(()=>{
-  const key='gamebti-collection-v1';
+  const key='gamebti-collection-v2';
   const valid=(code,types)=>typeof code==='string'&&Object.prototype.hasOwnProperty.call(types,code);
   function create(types,getStorage){
     const entries={};

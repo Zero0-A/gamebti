@@ -1,0 +1,11 @@
+.cloud-stat{margin:18px 0 0;padding:14px 16px;border:1px dashed #c7ccb9;border-radius:6px;background:#f1f2e7}
+.cloud-stat .mono{display:block;font-size:9px;letter-spacing:1.4px;color:#8b9180}
+.cloud-stat-line{margin:7px 0 0;font-size:12px;line-height:2;color:#6f7666}
+.cloud-stat-line b{font-size:14px;color:var(--ink);font-weight:700;letter-spacing:-.3px}
+.cloud-stat.is-muted{background:#f3f3ea;border-style:dotted}
+.cloud-stat.is-muted .cloud-stat-line{color:#929786}
+.cloud-total{display:block;margin-top:7px;font-size:10px;letter-spacing:.6px;color:#8b9180}
+@media (max-width:640px){
+  .cloud-stat{margin-top:16px;padding:12px 14px}
+  .cloud-stat-line{font-size:11px;line-height:1.95}
+}

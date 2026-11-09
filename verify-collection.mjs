@@ -7,18 +7,18 @@ const types=context.window.GameData.types,{create,parseGift,giftURL}=context.win
 const memory=new Map(),storage={getItem:key=>memory.get(key)??null,setItem:(key,value)=>memory.set(key,value)};
 let book=create(types,()=>storage);
 assert.equal(book.codes().length,0);
-assert.equal(book.unlock('INTJ','self').added,true);
-assert.equal(book.unlock('ENFP','friend').added,true);
-assert.equal(book.unlock('ENFP','friend').added,false);
+assert.equal(book.unlock('G001','self').added,true);
+assert.equal(book.unlock('G031','friend').added,true);
+assert.equal(book.unlock('G031','friend').added,false);
 assert.equal(book.codes().length,2);
-assert.equal(book.source('INTJ').self,true);assert.equal(book.source('INTJ').friend,false);
-assert.equal(book.source('ENFP').friend,true);assert.equal(book.source('ENFP').self,false);
+assert.equal(book.source('G001').self,true);assert.equal(book.source('G001').friend,false);
+assert.equal(book.source('G031').friend,true);assert.equal(book.source('G031').self,false);
 book=create(types,()=>storage);assert.equal(book.codes().length,2);
-const secondTab=create(types,()=>storage);book.unlock('INFP','friend');secondTab.unlock('ESTP','self');
+const secondTab=create(types,()=>storage);book.unlock('G023','friend');secondTab.unlock('G042','self');
 book=create(types,()=>storage);assert.equal(book.codes().length,4);
-book.unlock('INTJ','friend');assert.equal(book.source('INTJ').self,true);assert.equal(book.source('INTJ').friend,true);assert.equal(book.codes().length,4);
+book.unlock('G001','friend');assert.equal(book.source('G001').self,true);assert.equal(book.source('G001').friend,true);assert.equal(book.codes().length,4);
 for(const code of Object.keys(types)){const url=giftURL('https://example.com/#old',code,types);assert.equal(parseGift(new URL(url).hash,types),code);assert.equal(new URL(url).hash,'#meet='+code);}
-for(const hash of ['#meet=constructor','#meet=__proto__','#meet=XXXX','#meet=ENFP&meet=INTJ','#meet=<script>','#other=ENFP'])assert.equal(parseGift(hash,types),null);
-assert.throws(()=>book.unlock('constructor','friend'));assert.throws(()=>book.unlock('INTJ','unknown'));
-const unavailable=create(types,()=>{throw Error('storage unavailable');});assert.equal(unavailable.unlock('INTJ','self').persisted,false);assert.equal(unavailable.has('INTJ'),true);
+for(const hash of ['#meet=INTJ','#meet=constructor','#meet=__proto__','#meet=XXXX','#meet=G031&meet=G001','#meet=<script>','#other=G031'])assert.equal(parseGift(hash,types),null);
+assert.throws(()=>book.unlock('constructor','friend'));assert.throws(()=>book.unlock('G001','unknown'));
+const unavailable=create(types,()=>{throw Error('storage unavailable');});assert.equal(unavailable.unlock('G001','self').persisted,false);assert.equal(unavailable.has('G001'),true);
 console.log('Verified: locked initial collection, persistence, self/friend provenance, duplicate gifts, tab merging, valid share links and invalid-link rejection.');

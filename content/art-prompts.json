@@ -1,0 +1,63 @@
+{
+  "generator": "built-in imagegen",
+  "style": "Transparent 4×4 pixel sprite atlas, fourteen characters in row-major order and two blank final cells. Cobalt blue-haired whale girls, blue-and-white modest maid/sailor outfit, whale tail, 16-bit Japanese RPG pixel art. Equal cells and consistent proportions; no text or labels.",
+  "sheets": [
+    {
+      "asset": "dist/assets/whale-types-01.png",
+      "characters": [
+        "G001 training leader: whistle and orderly step-by-step clipboard",
+        "G002 final-decision captain: small navy officer cap and a little wooden decision gavel",
+        "G003 pace pusher: goal flag and clock, pointing forward",
+        "G004 self-demanding practicer: practice target, score card and towel, focused expression",
+        "G005 self-directed teammate: sailor rope and anchor, quietly ready at her station",
+        "G006 persistent game inviter: phone with a game invite symbol and beckoning hand",
+        "G007 insight seeker: completed puzzle piece and glowing idea bulb",
+        "G008 accumulator: jars of resources, seedlings and a little growing collection",
+        "G009 competitor: winner medal and small podium trophy",
+        "G010 income optimizer: coin pouch and a pocket calculator",
+        "G011 cooperator: interlocking team emblems held together, cheerful group-minded pose",
+        "G012 backstop rescuer: large blue shield and a rescue rope",
+        "G013 patient teammate: warm cup and a soft heart cushion, welcoming gentle smile",
+        "G014 accommodating giver: gift box and little sunrise clock"
+      ]
+    },
+    {
+      "asset": "dist/assets/whale-types-02.png",
+      "characters": [
+        "G015 reciprocal helper: two matching help tickets being exchanged, balanced hands, not coins",
+        "G016 solo adventurer: small personal sailing boat and solo travel bag, self-reliant calm pose",
+        "G017 roaming non-settler: bedroll, walking stick and road backpack, no house",
+        "G018 non-competitive friend: setting aside a tiny score board and holding a peace flag, relaxed smile",
+        "G019 short-session player: compact hourglass and small weekend satchel",
+        "G020 tone-sensitive teammate: attentive large blue headphones and a tiny pause speech bubble",
+        "G021 honest cooperator: open palms and clear glass handshake emblem, no hidden mask",
+        "G022 voluntary challenger: little obstacle practice bar and training star, curious confident face, no winner medal",
+        "G023 explorer: adventure lantern, folded hidden-route map and compass",
+        "G024 sightseer: tiny folding seat and binoculars admiring a little sunset, no camera",
+        "G025 lore researcher: magnifying glass and ancient story scroll",
+        "G026 system experimenter: cyan potion flask, a small lever and a curious testing pose",
+        "G027 home decorator: miniature cozy sofa, warm lamp and house plant",
+        "G028 production manager: tiny workshop model with conveyor gears, not coin bags"
+      ]
+    },
+    {
+      "asset": "dist/assets/whale-types-03.png",
+      "characters": [
+        "G029 item organizer: neatly stacked material boxes with simple item icons, no text",
+        "G030 completionist: long check-mark quest checklist scroll, final empty checkbox",
+        "G031 funny scene maker: party horn, rubber duck and playful laughing pose",
+        "G032 companion player: two tea cups and a tiny chat bubble, warm inviting smile",
+        "G033 first-clear pioneer: torch and an unopened dungeon door key, discovering rules",
+        "G034 novelty sampler: three different colorful game cartridges and a curious bright expression",
+        "G035 shared-moment keeper: celebratory tiny cake, matching lanterns and little party firework",
+        "G036 story finisher: book opened to final page with a tied ribbon bookmark",
+        "G037 replay analyst: a small replay strategy board with arrows and a magnifier",
+        "G038 roleplayer: modest blue knight cape and shield with a promise emblem, staying in character",
+        "G039 photographer: detailed camera and small tripod, framing a photo with her hand",
+        "G040 speedrunner: stopwatch, light running boots and little motion marks",
+        "G041 patient teacher: small teaching chalkboard with puzzle pictures, gently pointing and offering the puzzle to a learner",
+        "G042 boundary setter: a friendly stop-hand gesture, small clock and a short decorative garden gate, relaxed firm expression"
+      ]
+    }
+  ]
+}
