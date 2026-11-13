@@ -1,0 +1,27 @@
+/* Compact navigation stays available without covering the game. */
+.header{position:sticky;top:0;z-index:15;isolation:isolate;border-bottom:1px solid #ffffff18}
+.header::before{content:"";position:absolute;inset:0 calc((100vw - 100%)/-2);z-index:-1;background:rgba(16,16,18,.8);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+body[data-screen="quiz"] .header [data-action="about"]{display:none}
+.collection-filters{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;width:100%;min-width:0;flex-wrap:nowrap}
+.collection-filters button{display:flex;align-items:center;justify-content:center;min-width:0;gap:3px;white-space:nowrap;padding:10px 4px;font-size:12px}
+.collection-filters button span{margin-left:0;flex-shrink:0}
+.card-qr img{box-sizing:border-box;padding:6px;border:2px solid #b9a580;border-radius:12px;background:#fff;box-shadow:3px 3px 0 #080b0b55}
+@media(max-width:640px){
+ .header{height:70px;display:flex;flex-wrap:nowrap;gap:8px;padding-block:10px}
+ .header nav{display:flex;width:auto;flex-shrink:0;margin-left:auto;gap:4px}
+ .header nav button{width:auto;min-height:42px;padding:8px 9px;font-size:11px;white-space:nowrap;flex-wrap:nowrap}
+ .header .brand{font-size:24px;gap:6px;min-width:0;flex-shrink:0}
+ .header .brand>svg{width:30px;height:30px;padding:4px;border-radius:9px}
+ .header .nav-note{display:none}
+ .header .out-arrow{display:none}
+ .collection-filters button{font-size:clamp(9px,2.45vw,12px);min-height:42px;padding:9px 2px;gap:2px;border-width:2px}
+ .collection-filters button span{font-size:inherit}
+}
+@media(max-width:380px){
+ .header{gap:5px}
+ .header .brand{font-size:22px;gap:5px;letter-spacing:-1.5px}
+ .header .brand>svg{width:28px;height:28px}
+ .header .brand-star{display:none}
+ .header nav button{padding-inline:6px;font-size:10px}
+ .header .nav-count{font-size:9px;margin-left:3px;padding:2px 4px}
+}
