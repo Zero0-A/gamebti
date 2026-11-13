@@ -69,7 +69,16 @@
   function refreshCollection(){const codes=book.codes();$('#nav-unlocked').textContent=codes.length+'/'+totalTypes;$('#featured-players').innerHTML=codes.length?codes.slice(-4).map(card).join(''):emptyCollection();if($('#collection-dialog').open)renderCollection();}
   function unlock(code,source){const state=book.unlock(code,source);refreshCollection();if(!state.persisted)notify('这张卡已经解锁了，不过浏览器没能保存，关掉页面后可能会丢失。');return state;}
   function openCollection(code){closeDialogs();filter='unlocked';renderCollection();openDialog($('#collection-dialog'));if(code)previewType(code);}
-  function previewType(code){if(!book.has(code))return;const t=types[code];$('#collection-grid .type-preview-detail')?.remove();$('#collection-grid').querySelectorAll('.player-card').forEach(card=>card.classList.toggle('selected',card.dataset.type===code));const detail=document.createElement('div');detail.className='type-preview-detail';detail.innerHTML=`<h3>${code} · ${t.name}</h3><p>${t.intro}</p><h4>典型表现</h4><p>${t.example}</p>${qrBlock(code)}<div class="result-actions"><button class="button button-outline" data-action="download" data-card-code="${code}">保存图片 ↓</button><button class="button button-outline" data-action="share" data-card-code="${code}">分享 ↗</button></div>`;const selected=$(`#collection-grid [data-type="${code}"]`),cards=[...$('#collection-grid').querySelectorAll('.player-card')],columns=Math.max(1,Math.round($('#collection-grid').clientWidth/(selected.offsetWidth+12))),index=cards.indexOf(selected),end=Math.min(Math.floor(index/columns)*columns+columns-1,cards.length-1);cards[end].after(detail);detail.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'instant':'smooth',block:'nearest'});}
+  function previewType(code){
+    if(!book.has(code))return;
+    const selected=$(`#collection-grid [data-type="${code}"]`),collapse=selected.classList.contains('selected');
+    $('#collection-grid .type-preview-detail')?.remove();
+    const cards=[...$('#collection-grid').querySelectorAll('.player-card')];
+    cards.forEach(card=>{const expanded=!collapse&&card===selected;card.classList.toggle('selected',expanded);if(card.dataset.type)card.setAttribute('aria-expanded',String(expanded));});
+    if(collapse)return;
+    const t=types[code],detail=document.createElement('div');detail.className='type-preview-detail';detail.innerHTML=`<h3>${code} · ${t.name}</h3><p>${t.intro}</p><h4>典型表现</h4><p>${t.example}</p>${qrBlock(code)}<div class="result-actions"><button class="button button-outline" data-action="download" data-card-code="${code}">保存图片 ↓</button><button class="button button-outline" data-action="share" data-card-code="${code}">分享 ↗</button></div>`;
+    const columns=Math.max(1,Math.round($('#collection-grid').clientWidth/(selected.offsetWidth+12))),index=cards.indexOf(selected),end=Math.min(Math.floor(index/columns)*columns+columns-1,cards.length-1);cards[end].after(detail);detail.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'instant':'smooth',block:'nearest'});
+  }
   function clearGiftHash(){const url=new URL(location.href),params=new URLSearchParams(url.hash.slice(1));if(params.has('meet')){params.delete('meet');url.hash=params.toString();history.replaceState(history.state,'',url);}}
   async function handleGift(){
     const params=new URLSearchParams(location.hash.slice(1));if(!params.has('meet'))return;
