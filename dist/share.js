@@ -1,11 +1,9 @@
-/* QR encoder: qrcode-generator 2.0.4, Kazuhiko Arase, MIT (see vendor/qrcode.js). */
 'use strict';
 window.GameShare=(()=>{
- const publicURL='https://gamebti.app.workbuddy.host/?sharecode=UVPWTOVNVN';
- const cache=new Map();
- function url(code){return window.GameCollection.giftURL(publicURL,code,window.GameData.types);}
- function matrix(code){if(!cache.has(code)){const qr=qrcode(0,'M');qr.addData(url(code));qr.make();cache.set(code,qr);}return cache.get(code);}
- function image(code){return matrix(code).createDataURL(5,20);}
- function draw(ctx,code,x,y,size){const qr=matrix(code),n=qr.getModuleCount(),cell=Math.floor(size/(n+8)),side=cell*(n+8),left=x+Math.floor((size-side)/2),top=y+Math.floor((size-side)/2);ctx.fillStyle='#fff';ctx.fillRect(x,y,size,size);ctx.fillStyle='#000';for(let r=0;r<n;r++)for(let c=0;c<n;c++)if(qr.isDark(r,c))ctx.fillRect(left+(c+4)*cell,top+(r+4)*cell,cell,cell);}
+ const fallback='https://gamebti.app.workbuddy.host/?sharecode=UVPWTOVNVN',cache=new Map();
+ function url(code){const base=document.querySelector('meta[name="gamebti-share-url"]')?.content||fallback;return window.GameCollection.giftURL(base,code,window.GameData.types);}
+ function image(code){const text=url(code);if(!cache.has(text)){const qr=qrcodegen.QrCode.encodeText(text,qrcodegen.QrCode.Ecc.MEDIUM),n=qr.size+8;let path='';for(let row=0;row<qr.size;row++)for(let col=0;col<qr.size;col++)if(qr.getModule(col,row))path+=`M${col+4} ${row+4}h1v1h-1z`;
+ const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${n*5}" height="${n*5}" viewBox="0 0 ${n} ${n}" shape-rendering="crispEdges"><path fill="white" d="M0 0h${n}v${n}H0z"/><path fill="black" d="${path}"/></svg>`;cache.set(text,'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg));}return cache.get(text);}
+ function draw(ctx,code,x,y,side){window.GameCardQR.draw(ctx,url(code),x,y,side);}
  return {url,image,draw};
 })();

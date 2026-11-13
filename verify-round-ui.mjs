@@ -11,12 +11,12 @@ function page(storage,copyMode='manual'){
     const e={dataset:{},style:{},hidden:false,open:false,disabled:false,textContent:'',
       classList:{add:v=>classes.add(v),remove:v=>classes.delete(v),toggle:(v,on)=>on?classes.add(v):classes.delete(v)},
       addEventListener:(name,fn)=>events[name]=fn,events,
-      append(child){child.parentElement=e;},contains:child=>child.parentElement===e,setAttribute(){},focus(){},select(){selections++;},after(){},insertBefore(){},close(){e.open=false;},showModal(){e.open=true;},
+      setAttribute(){},focus(){},select(){selections++;},after(){},insertBefore(){},close(){e.open=false;},showModal(){e.open=true;},showPopover(){e.popoverOpen=true;},hidePopover(){e.popoverOpen=false;},
       querySelector:s=>element(key+' '+s),querySelectorAll:()=>[],
       get innerHTML(){return html;},set innerHTML(value){html=value;if(key==='#quiz')answerButtons=[0,1,2,3].map(index=>({dataset:{answer:String(index)},disabled:false,classList:{add(){}},setAttribute(){}}));}
     };elements.set(key,e);return e;
   }
-  const document={body:{append(child){child.parentElement=document.body;},dataset:{},classList:{add(){},remove(){}}},
+  const document={body:{dataset:{},classList:{add(){},remove(){}}},
     querySelector:s=>/^\[data-answer="(\d)"\]$/.test(s)?answerButtons[Number(s.match(/\d/)[0])]:element(s),
     querySelectorAll:s=>s==='#quiz button'?answerButtons:[],
     addEventListener:(name,fn)=>(listeners[name]??=[]).push(fn),
@@ -24,11 +24,12 @@ function page(storage,copyMode='manual'){
   const localStorage={getItem:k=>storage.get(k)??null,setItem:(k,v)=>storage.set(k,v)};
   const sandbox={window:{},document,localStorage,URL,URLSearchParams,
     matchMedia:()=>({matches:false,addEventListener(){}}),scrollTo(){scrolls++;},addEventListener(){},confirm:()=>true,
-    navigator:{clipboard:{writeText:async text=>{if(copyMode!=='clipboard')throw Error('Clipboard denied');copiedText=text;}}},isSecureContext:copyMode!=='manual',
-    location:{href:'http://127.0.0.1:4173/',hash:'',protocol:'http:'},
+    navigator:{clipboard:{writeText:async text=>{if(copyMode!=='clipboard')throw Error('Clipboard denied');copiedText=text;}},...(copyMode.startsWith('native')?{share:async data=>{if(copyMode==='native-cancel')throw Object.assign(Error('Cancelled'),{name:'AbortError'});if(copyMode==='native-fail')throw Error('Share failed');copiedText=data.url;}}:{})},isSecureContext:copyMode!=='manual',
+    location:{href:'http://127.0.0.1:4173/',hash:'',protocol:copyMode.startsWith('native')?'https:':'http:'},
     setTimeout:(fn,ms)=>{timers.set(++timerId,{fn,ms});return timerId;},clearTimeout:id=>timers.delete(id)};
   vm.createContext(sandbox);
-  for(const file of ['data.js','round-content.js','rounds.js','collection.js','vendor/qrcode.js','share.js','app.js'])vm.runInContext(readFileSync(new URL('./dist/'+file,import.meta.url),'utf8'),sandbox);
+  element('meta[name="gamebti-share-url"]').content=readFileSync(new URL('./dist/index.html',import.meta.url),'utf8').match(/<meta name="gamebti-share-url" content="([^"]+)">/)[1];
+  for(const file of ['data.js','round-content.js','rounds.js','collection.js','vendor/qrcodegen.js','card-qr.js','share.js','app.js'])vm.runInContext(readFileSync(new URL('./dist/'+file,import.meta.url),'utf8'),sandbox);
   const click=b=>{const event={target:{closest:()=>b,tagName:'BUTTON'}};for(const fn of listeners.click)fn(event);};
   const action=(value,code)=>{const button={dataset:{action:value,...(code?{cardCode:code}:{})},disabled:false};click(button);return button;};
   const choose=i=>click(answerButtons[i]);
@@ -94,6 +95,8 @@ for(const source of ['self','friend']){
   const collection=page(shareStore,'clipboard');
   collection.action('copy-link','G015');await new Promise(resolve=>setImmediate(resolve));
   assert.match(collection.copied(),/#meet=G015/,'Collection sharing works without a current result');
+  assert.ok(collection.copied().includes('https://gamebti.app.workbuddy.host/?sharecode=UVPWTOVNVN#meet=G015'),'Copy links and exported QR codes use the same public address');
+  assert.equal(collection.element('#toast').popoverOpen,true,'Feedback must be in the top layer above collection dialogs');
   assert.equal(shareStore.has('gamebti-rounds-save-v2'),false,'Sharing never creates a test session');
   collection.action('copy-link','G001');await new Promise(resolve=>setImmediate(resolve));
   assert.match(collection.copied(),/#meet=G015/,'Locked cards cannot be shared');

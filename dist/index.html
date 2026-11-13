@@ -4,15 +4,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#101012">
-  <meta name="description" content="想想你平时怎么玩游戏，回答一些熟悉的场景，看看自己会测出哪些玩家人格。">
-  <title>GameBTI — 游戏里，你是哪种人？</title>
+  <meta name="gamebti-share-url" content="https://gamebti.app.workbuddy.host/?sharecode=UVPWTOVNVN">
+  <meta name="description" content="溯游工作室的趣味游戏人格测试。想想你平时怎么玩游戏，回答一些熟悉的场景，看看自己会测出哪些玩家人格。">
+  <title>GameBTI · 溯游工作室 — 游戏里，你是哪种人？</title>
   <link rel="icon" href="icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="street.css">
   <script src="data.js" defer></script>
   <script src="collection.js" defer></script>
   <script src="round-content.js" defer></script>
   <script src="rounds.js" defer></script>
-  <script src="vendor/qrcode.js" defer></script>
+  <script src="vendor/qrcodegen.js" defer></script>
+  <script src="card-qr.js" defer></script>
   <script src="share.js" defer></script>
   <script src="app.js" defer></script>
   <link rel="stylesheet" href="share.css">
@@ -27,7 +29,7 @@
     <section id="home" class="screen wrap">
       <div class="hero">
         <div class="hero-copy">
-          <div class="eyebrow"><span class="tiny-cross"><img class="whale-mark" src="assets/whale-mark.svg" width="24" height="18" alt=""></span> 玩家人格测试</div>
+          <div class="eyebrow"><span class="studio-tag"><img class="whale-mark" src="assets/whale-mark.svg" width="24" height="18" alt="">溯游工作室</span><span>玩家人格测试</span></div>
           <h1>现实太复杂，<br>游戏里<span class="red">你是谁<span class="question-mark">？</span></span></h1>
           <p class="hero-desc">和朋友开黑时，你总在带队，还是一转眼就跑去捡东西了？按平时玩游戏的习惯答一答，看看会测出什么人格。</p>
           <div class="hero-actions"><button class="button button-dark" id="start-button" data-action="start"><span class="start-symbol" aria-hidden="true">▶</span> 测测我的玩家人格 <span>↗</span></button></div>
@@ -54,11 +56,11 @@
     <section id="quiz" class="screen wrap quiz-screen" hidden></section>
     <section id="result" class="screen wrap result-screen" hidden></section>
   </main>
-  <footer class="footer wrap"><a class="footer-brand" href="#">gamebti<span><img class="whale-mark" src="assets/whale-mark.svg" width="24" height="18" alt=""></span></a><span>能一起玩得开心，就是好队友。</span><span class="footer-right">一个关于游戏的趣味测试 · 仅供娱乐 <span class="mono">© 2026</span></span></footer>
-  <dialog id="collection-dialog" class="collection-dialog" aria-labelledby="collection-title"><div class="dialog-top"><div><span class="section-kicker mono">YOUR PLAYER COLLECTION</span><h2 id="collection-title">我的玩家图鉴<span class="collection-count red" id="collection-count">0/42</span></h2></div><button class="close-button" data-action="close" aria-label="关闭图鉴">×</button></div><div class="collection-progress" aria-label="人格收集进度"><span id="collection-progress-fill"></span></div><div class="collection-filters" id="collection-filters"><button class="active" data-filter="unlocked">已解锁 <span>0</span></button><button data-filter="self">我测出的 <span>0</span></button><button data-filter="friend">朋友送来的 <span>0</span></button><button data-filter="all">全部格子 <span>42</span></button></div><div id="collection-grid" class="collection-grid"></div><p class="collection-local-note">图鉴存在你现在用的浏览器里，换设备后不会自动同步。</p></dialog>
+  <footer class="footer wrap"><a class="footer-brand" href="#">gamebti<span><img class="whale-mark" src="assets/whale-mark.svg" width="24" height="18" alt=""></span></a><span>能一起玩得开心，就是好队友。</span><span class="footer-right">溯游工作室 · 仅供娱乐 <span class="mono">© 2026</span></span></footer>
+  <dialog id="collection-dialog" class="collection-dialog" aria-labelledby="collection-title"><div class="collection-scroll" tabindex="0" role="region" aria-label="人格图鉴内容"><div class="dialog-top"><div><span class="section-kicker mono">YOUR PLAYER COLLECTION</span><h2 id="collection-title">我的玩家图鉴<span class="collection-count red" id="collection-count">0/42</span></h2></div><button class="close-button" data-action="close" aria-label="关闭图鉴">×</button></div><div class="collection-progress" aria-label="人格收集进度"><span id="collection-progress-fill"></span></div><div class="collection-filters" id="collection-filters"><button class="active" data-filter="unlocked">已解锁 <span>0</span></button><button data-filter="self">我测出的 <span>0</span></button><button data-filter="friend">朋友送来的 <span>0</span></button><button data-filter="all">全部格子 <span>42</span></button></div><div id="collection-grid" class="collection-grid"></div><p class="collection-local-note">图鉴存在你现在用的浏览器里，换设备后不会自动同步。</p></div></dialog>
   <dialog id="gift-dialog" class="gift-dialog" aria-labelledby="gift-title"><div class="dialog-top"><span class="section-kicker mono">A PLAYER YOU SHOULD MEET</span><button class="close-button" data-action="close" aria-label="关闭朋友的人格卡">×</button></div><div id="gift-content"></div></dialog>
-  <dialog id="about-dialog" class="about-dialog" aria-labelledby="about-title"><button class="close-button" data-action="close" aria-label="关闭说明">×</button><span class="section-kicker mono">ABOUT GAMEBTI</span><h2 id="about-title">GameBTI<br>是什么？</h2><p>GameBTI 是一个从游戏习惯出发的趣味人格测试，想看看你在游戏里是个什么样的人。</p><p>开黑时爱带队，逛地图总想拐个弯，还是每次都惦记着把家盖好？这些平时不太留意的小习惯，都是你的玩家性格。</p><p>这里用 42 种玩家人格，给不同的玩法起个名字。它们可以同时存在：你既可以是爱探险的探险者，也可以是照顾队友的兜底者。</p><div class="about-note">看看自己，也认认队友。仅供娱乐。</div><button class="button button-dark" data-action="start">测测我的玩家人格 <span>↗</span></button></dialog>
+  <dialog id="about-dialog" class="about-dialog" aria-labelledby="about-title"><button class="close-button" data-action="close" aria-label="关闭说明">×</button><span class="section-kicker mono">ABOUT GAMEBTI</span><h2 id="about-title">GameBTI<br>是什么？</h2><p>GameBTI 是一个从游戏习惯出发的趣味人格测试，想看看你在游戏里是个什么样的人。</p><p>开黑时爱带队，逛地图总想拐个弯，还是每次都惦记着把家盖好？这些平时不太留意的小习惯，都是你的玩家性格。</p><p>这里用 42 种玩家人格，给不同的玩法起个名字。它们可以同时存在：你既可以是爱探险的探险者，也可以是照顾队友的兜底者。</p><div class="about-note">溯游工作室 · 仅供娱乐</div><button class="button button-dark" data-action="start">测测我的玩家人格 <span>↗</span></button></dialog>
   <dialog id="rules-dialog" class="about-dialog" aria-labelledby="rules-title"><button class="close-button" data-action="close" aria-label="关闭游戏规则">×</button><span class="section-kicker mono">HOW TO PLAY</span><h2 id="rules-title">你的玩法，<br>不只一种。</h2><p>测试分轮进行，每轮答完 12 道题，就能看到一个人格结果。先玩满三轮，之后想结束或再试一轮都可以，最多能玩六轮。</p><p>同一局不会重复出题，也不会给你相同的人格。没空一次玩完的话，可以先回大厅，下次再接着答。</p><div class="about-note">仅供娱乐</div><button class="button button-dark" data-action="start">开始测试 <span>↗</span></button></dialog>
-  <div id="toast" role="status" aria-live="polite"></div>
+  <div id="toast" popover="manual" role="status" aria-live="polite" aria-atomic="true"></div>
 </body>
 </html>
