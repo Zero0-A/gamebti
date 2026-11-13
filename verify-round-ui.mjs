@@ -28,6 +28,7 @@ function page(storage,copyMode='manual'){
     location:{href:'http://127.0.0.1:4173/',hash:'',protocol:copyMode.startsWith('native')?'https:':'http:'},
     setTimeout:(fn,ms)=>{timers.set(++timerId,{fn,ms});return timerId;},clearTimeout:id=>timers.delete(id)};
   vm.createContext(sandbox);
+  element('meta[name="gamebti-share-url"]').content=readFileSync(new URL('./dist/index.html',import.meta.url),'utf8').match(/<meta name="gamebti-share-url" content="([^"]+)">/)[1];
   for(const file of ['data.js','round-content.js','rounds.js','collection.js','app.js'])vm.runInContext(readFileSync(new URL('./dist/'+file,import.meta.url),'utf8'),sandbox);
   const click=b=>{const event={target:{closest:()=>b,tagName:'BUTTON'}};for(const fn of listeners.click)fn(event);};
   const action=(value,code)=>{const button={dataset:{action:value,...(code?{cardCode:code}:{})},disabled:false};click(button);return button;};
@@ -94,6 +95,7 @@ for(const source of ['self','friend']){
   const collection=page(shareStore,'clipboard');
   collection.action('share','G015');await new Promise(resolve=>setImmediate(resolve));
   assert.match(collection.copied(),/#meet=G015/,'Collection sharing works without a current result');
+  assert.ok(collection.copied().includes('https://gamebti.app.workbuddy.host/?sharecode=UVPWTOVNVN#meet=G015'),'Copy links and exported QR codes use the same public address');
   assert.equal(collection.element('#toast').popoverOpen,true,'Feedback must be in the top layer above collection dialogs');
   assert.equal(shareStore.has('gamebti-rounds-save-v2'),false,'Sharing never creates a test session');
   collection.action('share','G001');await new Promise(resolve=>setImmediate(resolve));
