@@ -3,15 +3,15 @@ import {readFileSync} from 'node:fs';
 import assert from 'node:assert/strict';
 
 // 用独立内存存储执行真实页面事件，不接触试玩浏览器的进度与图鉴。
-function page(storage){
-  const listeners={},elements=new Map(),timers=new Map();let timerId=0,answerButtons=[];
+function page(storage,copyMode='manual'){
+  const listeners={},elements=new Map(),timers=new Map();let timerId=0,answerButtons=[],scrolls=0,copiedText='',selections=0;
   function element(key){
     if(elements.has(key))return elements.get(key);
     let html='';const events={},classes=new Set();
     const e={dataset:{},style:{},hidden:false,open:false,disabled:false,textContent:'',
       classList:{add:v=>classes.add(v),remove:v=>classes.delete(v),toggle:(v,on)=>on?classes.add(v):classes.delete(v)},
       addEventListener:(name,fn)=>events[name]=fn,events,
-      setAttribute(){},focus(){},after(){},insertBefore(){},close(){e.open=false;},showModal(){e.open=true;},
+      setAttribute(){},focus(){},select(){selections++;},after(){},insertBefore(){},close(){e.open=false;},showModal(){e.open=true;},
       querySelector:s=>element(key+' '+s),querySelectorAll:()=>[],
       get innerHTML(){return html;},set innerHTML(value){html=value;if(key==='#quiz')answerButtons=[0,1,2,3].map(index=>({dataset:{answer:String(index)},disabled:false,classList:{add(){}},setAttribute(){}}));}
     };elements.set(key,e);return e;
@@ -19,19 +19,21 @@ function page(storage){
   const document={body:{dataset:{},classList:{add(){},remove(){}}},
     querySelector:s=>/^\[data-answer="(\d)"\]$/.test(s)?answerButtons[Number(s.match(/\d/)[0])]:element(s),
     querySelectorAll:s=>s==='#quiz button'?answerButtons:[],
-    addEventListener:(name,fn)=>(listeners[name]??=[]).push(fn)};
+    addEventListener:(name,fn)=>(listeners[name]??=[]).push(fn),
+    execCommand:()=>{if(copyMode==='fallback'){copiedText=element('#share-dialog textarea').value;return true;}throw Error('Clipboard unavailable');}};
   const localStorage={getItem:k=>storage.get(k)??null,setItem:(k,v)=>storage.set(k,v)};
   const sandbox={window:{},document,localStorage,URL,URLSearchParams,
-    matchMedia:()=>({matches:false,addEventListener(){}}),scrollTo(){},addEventListener(){},confirm:()=>true,
+    matchMedia:()=>({matches:false,addEventListener(){}}),scrollTo(){scrolls++;},addEventListener(){},confirm:()=>true,
+    navigator:{clipboard:{writeText:async text=>{if(copyMode!=='clipboard')throw Error('Clipboard denied');copiedText=text;}}},isSecureContext:copyMode!=='manual',
     location:{href:'http://127.0.0.1:4173/',hash:'',protocol:'http:'},
     setTimeout:(fn,ms)=>{timers.set(++timerId,{fn,ms});return timerId;},clearTimeout:id=>timers.delete(id)};
   vm.createContext(sandbox);
   for(const file of ['data.js','round-content.js','rounds.js','collection.js','app.js'])vm.runInContext(readFileSync(new URL('./dist/'+file,import.meta.url),'utf8'),sandbox);
   const click=b=>{const event={target:{closest:()=>b,tagName:'BUTTON'}};for(const fn of listeners.click)fn(event);};
-  const action=value=>click({dataset:{action:value},disabled:false});
+  const action=value=>{const button={dataset:{action:value},disabled:false};click(button);return button;};
   const choose=i=>click(answerButtons[i]);
   const flush=()=>{for(const[id,t]of [...timers])if(t.ms===180){timers.delete(id);t.fn();}};
-  return {element,action,choose,flush,resultType:code=>click({dataset:{resultType:code},disabled:false}),resume:()=>element('#resume-button').events.click(),saved:()=>JSON.parse(storage.get('gamebti-rounds-save-v2'))};
+  return {element,action,choose,flush,scrolls:()=>scrolls,copied:()=>copiedText,selections:()=>selections,resultType:code=>click({dataset:{resultType:code},disabled:false}),resume:()=>element('#resume-button').events.click(),saved:()=>JSON.parse(storage.get('gamebti-rounds-save-v2'))};
 }
 const storage=new Map([['gamebti-behaviors-save-v2','legacy-answer-sentinel'],['gamebti-save-v1','older-answer-sentinel'],['gamebti-rounds-save-v1','previous-rounds-sentinel']]);
 let p=page(storage);p.action('start');
@@ -52,7 +54,8 @@ for(let n=1;n<=6;n++){
   assert.ok(html.includes('is-revealed'),'New personality gets a reveal animation');
   const unlocked=[...html.matchAll(/data-result-type="(G\d+)"/g)].map(match=>match[1]);
   assert.equal(unlocked.length,n);
-  const progressBefore=JSON.stringify(p.saved());p.resultType(unlocked[0]);
+  const progressBefore=JSON.stringify(p.saved()),scrollsBefore=p.scrolls();p.resultType(unlocked[0]);
+  assert.equal(p.scrolls(),scrollsBefore,'Switching personalities must preserve scroll position');
   assert.ok(p.element('#result').innerHTML.includes(`<div class="identity-code">${unlocked[0]}</div>`));
   assert.ok(!p.element('#result').innerHTML.includes('is-revealed'),'Switching cards does not replay unlock');
   assert.equal(JSON.stringify(p.saved()),progressBefore,'Viewing cards does not change answers');
@@ -79,4 +82,11 @@ p.action('start');assert.equal(p.saved().stage,'quiz');assert.equal(Object.keys(
 assert.equal(storage.get('gamebti-behaviors-save-v2'),'legacy-answer-sentinel');
 assert.equal(storage.get('gamebti-save-v1'),'older-answer-sentinel');
 assert.equal(storage.get('gamebti-rounds-save-v1'),'previous-rounds-sentinel');
+for(const mode of ['clipboard','fallback','manual']){
+  const copy=page(new Map(),mode),field=copy.element('#share-dialog textarea');field.value='GameBTI share text and link';
+  const button=copy.action('copy-share');await new Promise(resolve=>setImmediate(resolve));
+  assert.equal(button.disabled,false,'Copy button remains usable after success or failure');
+  if(mode==='manual'){assert.equal(copy.selections(),1);assert.ok(copy.element('#toast').textContent.includes('Ctrl+C'));}
+  else{assert.equal(copy.copied(),field.value);assert.equal(button.textContent,'已复制 ✓');}
+}
 console.log('Verified real app click handlers: automatic advance, double-click guard, previous/edit, refresh/resume, result rendering, finish gate, continue/exhaustion, collection unlock and legacy save preservation (DOM stubs, not a visual browser test).');
