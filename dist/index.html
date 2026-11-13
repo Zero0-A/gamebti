@@ -13,6 +13,8 @@
   <link rel="stylesheet" href="model.css">
   <script src="data.js" defer></script>
   <script src="collection.js" defer></script>
+  <script src="round-content.js" defer></script>
+  <script src="rounds.js" defer></script>
   <script src="app.js" defer></script>
 </head>
 <body data-screen="home">
@@ -29,8 +31,7 @@
           <h1>现实太复杂，<br>游戏里<span class="red">你是谁<span class="question-mark">？</span></span></h1>
           <p class="hero-desc">有时自己探险，有时替队友兜底。<br>你的玩法，不只一种。看看最近的游戏里，哪几面更明显。</p>
           <div class="hero-actions"><button class="button button-dark" id="start-button" data-action="start">测测我的玩家人格 <span>↗</span></button><span class="play-note"><span class="note-arrow">↶</span> 不用下载，即刻开玩</span></div>
-          <div class="hero-meta"><span><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7"/><path d="M10 5v5l3 2"/></svg> 约 6–12 分钟</span><span><svg viewBox="0 0 20 20"><path d="M5 3h10v14H5zM8 7h4m-4 3h4m-4 3h3"/></svg> 42 道初测 + 按需加测</span><span><span class="pixel-heart">♥</span> 没有标准答案</span></div>
-          <p class="legacy-notice" id="legacy-notice" hidden>分类已更新为 42 种行为倾向，请重新作答。旧版 16 型记录仍保留在当前浏览器，不会硬换算成新类型。</p>
+          <div class="hero-meta"><span><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7"/><path d="M10 5v5l3 2"/></svg> 每轮 12 道题</span><span><svg viewBox="0 0 20 20"><path d="M5 3h10v14H5zM8 7h4m-4 3h4m-4 3h3"/></svg> 先玩 3 轮，再自由继续</span><span><span class="pixel-heart">♥</span> 没有标准答案</span></div>
           <button id="resume-button" class="resume" hidden>上次还没打完？继续测试 →</button>
         </div>
         <div class="hero-art" aria-label="DeepSeek 风格的蓝发鲸鱼娘像素变体：军师、开黑玩家和花园漫游者">
@@ -53,7 +54,7 @@
   <footer class="footer wrap"><a class="footer-brand" href="#">gamebti<span><img class="whale-mark" src="assets/whale-mark.svg" width="24" height="18" alt=""></span></a><span>认真玩游戏，随便做自己。</span><span class="footer-right">一个关于游戏的趣味测试 · 仅供娱乐 <span class="mono">© 2026</span></span></footer>
   <dialog id="collection-dialog" class="collection-dialog" aria-labelledby="collection-title"><div class="dialog-top"><div><span class="section-kicker mono">YOUR PLAYER COLLECTION</span><h2 id="collection-title">我的玩家图鉴<span class="collection-count red" id="collection-count">0/42</span></h2></div><button class="close-button" data-action="close" aria-label="关闭图鉴">×</button></div><p class="dialog-desc">倾向可以并存，图鉴慢慢收集。</p><div class="collection-progress" aria-label="人格收集进度"><span id="collection-progress-fill"></span></div><div class="collection-filters" id="collection-filters"><button class="active" data-filter="unlocked">已解锁 <span>0</span></button><button data-filter="self">我测出的 <span>0</span></button><button data-filter="friend">朋友送来的 <span>0</span></button><button data-filter="all">全部格子 <span>42</span></button></div><div id="collection-grid" class="collection-grid"></div><p class="collection-local-note">图鉴保存在当前浏览器。分享你的人格链接，让朋友也收一张。</p></dialog>
   <dialog id="gift-dialog" class="gift-dialog" aria-labelledby="gift-title"><div class="dialog-top"><span class="section-kicker mono">A PLAYER YOU SHOULD MEET</span><button class="close-button" data-action="close" aria-label="关闭朋友的人格卡">×</button></div><div id="gift-content"></div></dialog>
-  <dialog id="about-dialog" class="about-dialog" aria-labelledby="about-title"><button class="close-button" data-action="close" aria-label="关闭说明">×</button><span class="section-kicker mono">YOUR PLAY STYLE, NOT A BOX</span><h2 id="about-title">你的玩法，<br>不只一种。</h2><p>这版 GameBTI 按《GAMEBTI人格完整表》整理了 42 种游戏行为倾向。它们可以并存：爱探险的人，也可能很会兜底。</p><p>请固定回想最近常玩的一款或一类游戏，按实际行为频率作答。没有经历就选“不适用”，它不会被算成零分。42 道初测后，对较明显的候选追加确认题；最后单独补充剧情偏好、当次状态、操作自评和注意习惯。</p><p>结果列出证据足够的明显倾向，并列保留，不用低分推断相反人格。附加标签不决定主类型，也不拿来判定现实性格、能力或心理状态。</p><p>表中没有定稿的权重和阈值，本站采用透明的公测试算规则：同一倾向至少两道适用回答，平均达到“经常”才进入候选结果，显示前三及同档并列。规则尚未经过量表验证。</p><div class="about-note">这是一份游戏里的观察与沟通参考。做完解锁自己，把结果链接发给朋友，还能互相收卡。</div><button class="button button-dark" data-action="start">按最近的玩法试试 <span>↗</span></button></dialog>
+  <dialog id="about-dialog" class="about-dialog" aria-labelledby="about-title"><button class="close-button" data-action="close" aria-label="关闭说明">×</button><span class="section-kicker mono">YOUR PLAY STYLE, NOT A BOX</span><h2 id="about-title">你的玩法，<br>不只一种。</h2><p>这版 GameBTI 按《GAMEBTI人格完整表》整理了 42 种游戏行为倾向。它们可以并存：爱探险的人，也可能很会兜底。</p><p>每轮只探索一个主题，在固定的 6–8 种相关人格之间，用 12 道情境题综合比较。选中答案就会自动进入下一题，答完立即获得一张人格卡。</p><p>先完成三轮、获得三个不同人格，再选择结束或继续。一局最多六轮，主题和题目不重复，获得的人格也不重复；可以暂存回大厅，下次继续。</p><p>每个选项同时观察两个行为方向，每个方向在不同情境中反复出现。结果比较整轮回答与组内候选的行为特征，不用某一个选项直接决定人格。候选接近时会说明，规则尚未经量表验证。</p><div class="about-note">这是一份游戏里的观察与沟通参考。做完解锁自己，把结果链接发给朋友，还能互相收卡。</div><button class="button button-dark" data-action="start">按最近的玩法试试 <span>↗</span></button></dialog>
   <div id="toast" role="status" aria-live="polite"></div>
 </body>
 </html>
