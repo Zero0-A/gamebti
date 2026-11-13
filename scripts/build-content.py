@@ -26,7 +26,7 @@ extras=[
  {'id':'T004A','tag':'T004','title':'当前任务还没做完时，我会被旁边的细节吸引，回过神才发现忘了继续。','context':'注意习惯 · 不参与人格排名','scale':'frequency','options':frequency}
 ]
 for q in extras:q.update(phase='extra',types=[],direction='separate',weight=0,notApplicable='exclude',sub='补充标签单独记录，不参与主类型的计分。')
-payload={'version':'gamebti-behaviors-v2','types':types,'tags':tags,'questions':questions+extras,'rules':{'initialCount':42,'confirmationCandidates':8,'minimumApplicable':2,'strongMean':3,'topCount':3,'ties':'include','scale':'frequency-0-4','status':'prototype-unvalidated'}}
+payload={'version':'gamebti-rounds-v3','types':types,'tags':tags,'questions':questions+extras,'rules':{'roundCount':3,'initialCountPerRound':14,'confirmationCandidates':2,'minimumApplicable':2,'minimumItemValue':2,'topCountPerRound':1,'ties':'first-score-then-code-with-notice','scale':'frequency-0-4','status':'prototype-unvalidated'}}
 logic=(ROOT/'scripts/scoring.js').read_text(encoding='utf-8')
 output="'use strict';\nwindow.GameData=(()=>{\nconst content="+json.dumps(payload,ensure_ascii=False,separators=(',',':'))+";\n"+logic+"\n})();\n"
 (ROOT/'dist/data.js').write_text(output,encoding='utf-8')
