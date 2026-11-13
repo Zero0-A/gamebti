@@ -106,3 +106,14 @@ body[data-screen="quiz"] .header,body[data-screen="quiz"]>.footer{display:none}
 .completion-page{max-width:900px;margin:auto}.completion-mark{display:grid;place-items:center;width:44px;height:44px;margin:0 auto 16px;border:2px solid #667f52;background:#e4ebd8;color:#455d34;box-shadow:3px 3px 0 #d2dac5;font-size:24px}.completion-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin:28px 0 32px}.completion-card{display:flex;flex-direction:column;align-items:center;min-width:0;padding:22px 16px;border:1px solid #b9c2ad;border-radius:4px;text-align:center;box-shadow:4px 4px 0 #e1e3d7}.completion-card>.mono{align-self:flex-start;font-size:12px}.completion-character{width:140px;height:140px;max-width:100%}.completion-card h3{font-size:22px;margin:8px 0}.completion-card p{font-size:14px;line-height:1.8;margin:0;color:#526049}.completion-view{margin-top:auto;padding-top:18px;font-size:12px;color:#526049}.completion-actions{display:flex;justify-content:center;gap:16px;flex-wrap:wrap}.completion-actions .button{min-height:50px;justify-content:center;font-size:15px;min-width:170px;border-radius:4px}
 @media(hover:hover){.completion-card:hover{outline:2px solid #68755d;outline-offset:2px}}
 @media(max-width:640px){.completion-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:22px 0 28px}.completion-card{padding:14px 10px}.completion-character{width:100px;height:100px}.completion-card h3{font-size:18px}.completion-card p{font-size:12px}.completion-actions{display:grid;grid-template-columns:1fr;gap:12px}.completion-actions .button{width:100%}.completion-mark{margin-bottom:12px}}
+
+/* 功能弹窗保持清晰易读，不改变首页的装饰布局。 */
+.about-dialog p,.card-preview-dialog p{color:#59634f;font-size:15px;line-height:1.9}
+.about-dialog .about-note{color:#626b59;font-size:12px;line-height:1.7}
+.collection-local-note{color:#626b59;line-height:1.8}
+.share-copy{font-size:16px;line-height:1.8;resize:vertical;max-height:48dvh;color:var(--ink)}
+.answer:focus-visible,.run-slot:focus-visible,.completion-card:focus-visible{outline:3px solid var(--orange);outline-offset:4px}
+.button-outline:active{background:#e8ecdf}.close-button:active{background:#dde4d3}
+.card-preview-actions .button,.gift-dialog>.text-link{min-height:48px}
+@media(hover:hover){.about-dialog .button-outline:hover,.card-preview-actions .button-outline:hover{background:#e8ecdf;border-color:#849476}}
+@media(max-width:640px){.about-dialog p,.card-preview-dialog p{font-size:14px;line-height:1.85}.about-dialog .about-note{margin-top:16px;padding-top:14px}.about-dialog .button{margin-top:18px}.share-copy{min-height:128px}.collection-local-note{font-size:12px}}
