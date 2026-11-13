@@ -56,7 +56,7 @@ for(let n=1;n<=6;n++){
   assert.ok(p.element('#result').innerHTML.includes(`<div class="identity-code">${unlocked[0]}</div>`));
   assert.ok(!p.element('#result').innerHTML.includes('is-revealed'),'Switching cards does not replay unlock');
   assert.equal(JSON.stringify(p.saved()),progressBefore,'Viewing cards does not change answers');
-  assert.match(html,new RegExp(`本局已获得 ${n} 个不同人格`));
+  assert.match(html,new RegExp(`已收集 ${n} 张`));
   assert.equal(html.includes('data-action="finish"'),n>=3);
   assert.equal(html.includes('data-action="continue"'),n<6);
   const book=JSON.parse(storage.get('gamebti-collection-v2'));assert.equal(Object.keys(book.entries).length,n);
@@ -68,7 +68,7 @@ for(let n=1;n<=6;n++){
     assert.equal([...completion.matchAll(/class="completion-card /g)].length,3);
     assert.ok(!completion.includes('data-action="finish"'));
     ended.action('home');assert.equal(ended.element('#home').hidden,false);assert.equal(ended.saved().stage,'ended');
-    const reload=page(endedStore);reload.resume();assert.match(reload.element('#result').innerHTML,/这一局，收好了/);
+    const reload=page(endedStore);reload.resume();assert.match(reload.element('#result').innerHTML,/本局完成/);
   }
   if(n<6){p=page(storage);p.resume();p.action('continue');assert.ok(p.element('#quiz').innerHTML.includes('探索中'));}
 }
