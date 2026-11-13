@@ -110,11 +110,14 @@ assert.equal(JSON.stringify(selectedShare.saved()),unchanged,'Sharing a collecte
 for(const mode of ['clipboard','fallback','manual']){
   const siteStore=new Map(),site=page(siteStore,mode);assert.equal(site.copied(),'','Page load must not touch the clipboard');
   site.action('share-site');await new Promise(resolve=>setImmediate(resolve));
+  assert.equal(site.copied(),'','Opening the poster must not copy anything');
+  assert.equal(site.element('#site-share-dialog .site-share-status').textContent,'');
+  site.action('copy-site');await new Promise(resolve=>setImmediate(resolve));
   const field=site.element('#site-share-dialog textarea'),status=site.element('#site-share-dialog .site-share-status');
   const invite='来测测你是哪种玩家，看看咱俩像不像！\nhttps://gamebti.app.workbuddy.host/?sharecode=UVPWTOVNVN';
   assert.equal(site.element('#site-share-dialog').open,true);assert.equal(field.value,invite);assert.ok(!field.value.includes('#meet='));assert.equal(siteStore.has('gamebti-rounds-save-v2'),false);
   if(mode==='manual'){assert.equal(field.hidden,false);assert.match(status.textContent,/长按/);}
-  else{assert.equal(site.copied(),invite);assert.equal(field.hidden,true);assert.match(status.textContent,/已复制/);}
-  site.action('copy-site');await new Promise(resolve=>setImmediate(resolve));assert.equal(field.value,invite);
+  else{assert.equal(site.copied(),invite);assert.equal(field.hidden,true);assert.match(status.textContent,/复制成功/);assert.equal(site.element('#toast').textContent,'复制成功');}
+  site.action('share-site');await new Promise(resolve=>setImmediate(resolve));assert.equal(status.textContent,'','Reopening the poster clears the old success message');assert.equal(field.hidden,true);assert.equal(field.value,invite);
 }
 console.log('Verified app flow, card sharing and website poster invitation copying, legacy/manual clipboard fallbacks and unchanged test progress (DOM stubs).');

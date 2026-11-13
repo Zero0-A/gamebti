@@ -80,12 +80,12 @@
     catch{if(image.isConnected)status.textContent='人格卡暂时没能加载，请重新打开链接。';}
   }
   function claimGift(){if(!pendingGift)return;const code=pendingGift,{added}=unlock(code,'friend');$('#gift-dialog').close();clearGiftHash();pendingGift=null;openCollection(code);notify(added?'已收藏':'已在图鉴中');}
-  async function shareSite(){const d=$('#site-share-dialog');if(!d.open)openDialog(d);await copySite();}
+  function shareSite(){const d=$('#site-share-dialog');d.querySelector('textarea').hidden=true;d.querySelector('.site-share-status').textContent='';if(!d.open)openDialog(d);}
   async function copySite(){
     const d=$('#site-share-dialog'),field=d.querySelector('textarea'),status=d.querySelector('.site-share-status');field.value=window.GameShare.invitation();
-    try{if(!navigator.clipboard||!isSecureContext)throw Error('manual');await navigator.clipboard.writeText(field.value);field.hidden=true;status.textContent='邀请文案和网址已复制，发给搭子吧。';}
+    try{if(!navigator.clipboard||!isSecureContext)throw Error('manual');await navigator.clipboard.writeText(field.value);field.hidden=true;status.textContent='复制成功，发给搭子吧。';notify('复制成功');}
     catch{const focused=document.activeElement;field.hidden=false;field.focus();field.select();let copied=false;try{copied=!!document.execCommand?.('copy');}catch{}
-      if(copied){field.hidden=true;status.textContent='邀请文案和网址已复制，发给搭子吧。';focused?.focus?.({preventScroll:true});}
+      if(copied){field.hidden=true;status.textContent='复制成功，发给搭子吧。';notify('复制成功');focused?.focus?.({preventScroll:true});}
       else status.textContent='长按下方文字，复制后发给搭子。';
     }
   }
