@@ -9,8 +9,9 @@
   const sceneNames={team:'团队协作',relations:'朋友相处',discovery:'探索发现',building:'经营建造',challenge:'挑战难关',pace:'游玩节奏'};
   const whaleMark='<img class="whale-mark" src="assets/whale-mark.svg" width="24" height="18" alt="">';
   const lockIcon='<svg viewBox="0 0 40 48" fill="none" aria-hidden="true"><path d="M10 20v-8a10 10 0 0 1 20 0v8" stroke="currentColor" stroke-width="3"/><rect x="3" y="20" width="34" height="25" rx="5" stroke="currentColor" stroke-width="3"/><path d="M20 29v7" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>';
-  function character(code,className='card-icon'){const t=types[code],i=t.spriteIndex;return `<svg class="whale-sprite ${className}" viewBox="${i%4} ${Math.floor(i/4)} 1 1" aria-hidden="true"><image href="${t.sheet}" width="4" height="4" preserveAspectRatio="none"/></svg>`;}
-  $('#whale-cast').innerHTML=character('G039','whale-companion whale-left')+character('G031','whale-main')+character('G042','whale-companion whale-right');
+  function character(code,className='card-icon',sheet=types[code].sheet){const t=types[code],i=t.spriteIndex;return `<svg class="whale-sprite ${className}" viewBox="${i%4} ${Math.floor(i/4)} 1 1" aria-hidden="true"><image href="${sheet}" width="4" height="4" preserveAspectRatio="none"/></svg>`;}
+  const homeSheet='assets/whale-home-clean.png';
+  $('#whale-cast').innerHTML=character('G039','whale-companion whale-left',homeSheet)+character('G031','whale-main',homeSheet)+character('G042','whale-companion whale-right',homeSheet);
   function notify(text){$('#toast').textContent=text;$('#toast').classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').classList.remove('visible'),4200);}
   function closeDialogs(){document.querySelectorAll('dialog[open]').forEach(d=>d.close());}
   function openDialog(d){d.showModal();document.body.classList.add('dialog-open');d.addEventListener('close',()=>{if(!document.querySelector('dialog[open]'))document.body.classList.remove('dialog-open');},{once:true});}
