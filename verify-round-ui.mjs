@@ -11,7 +11,7 @@ function page(storage,copyMode='manual'){
     const e={dataset:{},style:{},hidden:false,open:false,disabled:false,textContent:'',
       classList:{add:v=>classes.add(v),remove:v=>classes.delete(v),toggle:(v,on)=>on?classes.add(v):classes.delete(v)},
       addEventListener:(name,fn)=>events[name]=fn,events,
-      setAttribute(){},focus(){},select(){selections++;},after(){},insertBefore(){},close(){e.open=false;},showModal(){e.open=true;},
+      setAttribute(){},focus(){},select(){selections++;},after(){},insertBefore(){},close(){e.open=false;},showModal(){e.open=true;},showPopover(){e.popoverOpen=true;},hidePopover(){e.popoverOpen=false;},
       querySelector:s=>element(key+' '+s),querySelectorAll:()=>[],
       get innerHTML(){return html;},set innerHTML(value){html=value;if(key==='#quiz')answerButtons=[0,1,2,3].map(index=>({dataset:{answer:String(index)},disabled:false,classList:{add(){}},setAttribute(){}}));}
     };elements.set(key,e);return e;
@@ -24,8 +24,8 @@ function page(storage,copyMode='manual'){
   const localStorage={getItem:k=>storage.get(k)??null,setItem:(k,v)=>storage.set(k,v)};
   const sandbox={window:{},document,localStorage,URL,URLSearchParams,
     matchMedia:()=>({matches:false,addEventListener(){}}),scrollTo(){scrolls++;},addEventListener(){},confirm:()=>true,
-    navigator:{clipboard:{writeText:async text=>{if(copyMode!=='clipboard')throw Error('Clipboard denied');copiedText=text;}}},isSecureContext:copyMode!=='manual',
-    location:{href:'http://127.0.0.1:4173/',hash:'',protocol:'http:'},
+    navigator:{clipboard:{writeText:async text=>{if(copyMode!=='clipboard')throw Error('Clipboard denied');copiedText=text;}},...(copyMode.startsWith('native')?{share:async data=>{if(copyMode==='native-cancel')throw Object.assign(Error('Cancelled'),{name:'AbortError'});if(copyMode==='native-fail')throw Error('Share failed');copiedText=data.url;}}:{})},isSecureContext:copyMode!=='manual',
+    location:{href:'http://127.0.0.1:4173/',hash:'',protocol:copyMode.startsWith('native')?'https:':'http:'},
     setTimeout:(fn,ms)=>{timers.set(++timerId,{fn,ms});return timerId;},clearTimeout:id=>timers.delete(id)};
   vm.createContext(sandbox);
   for(const file of ['data.js','round-content.js','rounds.js','collection.js','app.js'])vm.runInContext(readFileSync(new URL('./dist/'+file,import.meta.url),'utf8'),sandbox);
@@ -94,6 +94,7 @@ for(const source of ['self','friend']){
   const collection=page(shareStore,'clipboard');
   collection.action('share','G015');await new Promise(resolve=>setImmediate(resolve));
   assert.match(collection.copied(),/#meet=G015/,'Collection sharing works without a current result');
+  assert.equal(collection.element('#toast').popoverOpen,true,'Feedback must be in the top layer above collection dialogs');
   assert.equal(shareStore.has('gamebti-rounds-save-v2'),false,'Sharing never creates a test session');
   collection.action('share','G001');await new Promise(resolve=>setImmediate(resolve));
   assert.match(collection.copied(),/#meet=G015/,'Locked cards cannot be shared');
@@ -104,4 +105,13 @@ const selectedCode=Object.keys(JSON.parse(storage.get('gamebti-collection-v2')).
 selectedShare.action('share',selectedCode);await new Promise(resolve=>setImmediate(resolve));
 assert.ok(selectedShare.copied().endsWith('#meet='+selectedCode));
 assert.equal(JSON.stringify(selectedShare.saved()),unchanged,'Sharing a collected card preserves the current run');
+for(const mode of ['native','native-cancel','native-fail']){
+  const native=page(new Map([['gamebti-collection-v2',JSON.stringify({version:1,entries:{G015:{self:true}}})]]),mode);
+  const button=native.action('share','G015');assert.equal(button.disabled,true);
+  await new Promise(resolve=>setImmediate(resolve));assert.equal(button.disabled,false);
+  assert.equal(native.element('#toast').popoverOpen,true);
+  if(mode==='native')assert.match(native.element('#toast').textContent,/已完成/);
+  if(mode==='native-cancel')assert.equal(native.element('#toast').textContent,'已取消分享');
+  if(mode==='native-fail')assert.equal(native.element('#share-dialog').open,true);
+}
 console.log('Verified real app click handlers: automatic advance, double-click guard, previous/edit, refresh/resume, result rendering, finish gate, continue/exhaustion, collection unlock and legacy save preservation (DOM stubs, not a visual browser test).');
