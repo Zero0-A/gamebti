@@ -23,7 +23,7 @@ function page(storage,copyMode='manual'){
     execCommand:()=>{if(copyMode==='fallback'){copiedText=document.activeElement.value;return true;}throw Error('Clipboard unavailable');}};
   const localStorage={getItem:k=>storage.get(k)??null,setItem:(k,v)=>storage.set(k,v)};
   const sandbox={window:{},document,localStorage,URL,URLSearchParams,
-    matchMedia:()=>({matches:false,addEventListener(){}}),scrollTo(){scrolls++;},addEventListener(){},confirm:()=>true,
+    matchMedia:()=>({matches:false,addEventListener(){}}),scrollX:0,scrollY:0,scrollTo(first,top){scrolls++;if(typeof first==='object'){sandbox.scrollX=first.left??sandbox.scrollX;sandbox.scrollY=first.top??sandbox.scrollY;}else{sandbox.scrollX=first;sandbox.scrollY=top;}},addEventListener(){},confirm:()=>true,
     navigator:{clipboard:{writeText:async text=>{if(copyMode!=='clipboard')throw Error('Clipboard denied');copiedText=text;}},...(copyMode.startsWith('native')?{share:async data=>{if(copyMode==='native-cancel')throw Object.assign(Error('Cancelled'),{name:'AbortError'});if(copyMode==='native-fail')throw Error('Share failed');copiedText=data.url;}}:{})},isSecureContext:copyMode!=='manual',
     location:{href:'http://127.0.0.1:4173/',hash:'',protocol:copyMode.startsWith('native')?'https:':'http:'},
     setTimeout:(fn,ms)=>{timers.set(++timerId,{fn,ms});return timerId;},clearTimeout:id=>timers.delete(id)};
@@ -34,15 +34,15 @@ function page(storage,copyMode='manual'){
   const action=(value,code)=>{const button={dataset:{action:value,...(code?{cardCode:code}:{})},disabled:false};click(button);return button;};
   const choose=i=>click(answerButtons[i]);
   const flush=()=>{for(const[id,t]of [...timers])if(t.ms===180){timers.delete(id);t.fn();}};
-  return {element,action,choose,flush,scrolls:()=>scrolls,copied:()=>copiedText,selections:()=>selections,resultType:code=>click({dataset:{resultType:code},disabled:false}),resume:()=>element('#resume-button').events.click(),saved:()=>JSON.parse(storage.get('gamebti-rounds-save-v2'))};
+  return {element,action,choose,flush,setScroll:(x,y)=>{sandbox.scrollX=x;sandbox.scrollY=y;},position:()=>[sandbox.scrollX,sandbox.scrollY],scrolls:()=>scrolls,copied:()=>copiedText,selections:()=>selections,resultType:code=>click({dataset:{resultType:code},disabled:false}),resume:()=>element('#resume-button').events.click(),saved:()=>JSON.parse(storage.get('gamebti-rounds-save-v2'))};
 }
 const storage=new Map([['gamebti-behaviors-save-v2','legacy-answer-sentinel'],['gamebti-save-v1','older-answer-sentinel'],['gamebti-rounds-save-v1','previous-rounds-sentinel']]);
 let p=page(storage);assert.equal(p.element('#resume-button').hidden,false);assert.equal(p.element('#resume-button').disabled,true);p.action('start');
 assert.match(p.element('#quiz').innerHTML,/1 \/ 12/);
 assert.ok(!p.element('#quiz').innerHTML.includes('data-action="next"'));
-p.choose(0);p.choose(1);assert.equal(p.saved().rounds[0].answers.length,1);p.flush();
-assert.match(p.element('#quiz').innerHTML,/2 \/ 12/);
-p.action('previous');assert.match(p.element('#quiz').innerHTML,/1 \/ 12/);
+p.setScroll(20,240);p.choose(0);p.choose(1);assert.equal(p.saved().rounds[0].answers.length,1);p.flush();
+assert.match(p.element('#quiz').innerHTML,/2 \/ 12/);assert.deepEqual(p.position(),[20,240],'Next question preserves the scroll position');
+p.action('previous');assert.deepEqual(p.position(),[20,240],'Previous question preserves the scroll position');assert.match(p.element('#quiz').innerHTML,/1 \/ 12/);
 p.choose(2);p.flush();assert.equal(p.saved().rounds[0].answers[0],2);
 const beforeRefresh=p.element('#quiz').innerHTML;
 p.action('home');assert.equal(p.element('#resume-button').disabled,false);p=page(storage);assert.equal(p.element('#resume-button').disabled,false);p.resume();assert.match(p.element('#quiz').innerHTML,/2 \/ 12/);
