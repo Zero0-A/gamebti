@@ -11,7 +11,7 @@ function page(storage,copyMode='manual'){
     const e={dataset:{},style:{},hidden:false,open:false,disabled:false,textContent:'',
       classList:{add:v=>classes.add(v),remove:v=>classes.delete(v),toggle:(v,on)=>on?classes.add(v):classes.delete(v)},
       addEventListener:(name,fn)=>events[name]=fn,events,
-      setAttribute(){},focus(){},select(){selections++;},after(){},insertBefore(){},close(){e.open=false;},showModal(){e.open=true;},showPopover(){e.popoverOpen=true;},hidePopover(){e.popoverOpen=false;},
+      setAttribute(){},focus(){document.activeElement=e;},select(){selections++;},after(){},insertBefore(){},close(){e.open=false;},showModal(){e.open=true;},showPopover(){e.popoverOpen=true;},hidePopover(){e.popoverOpen=false;},
       querySelector:s=>element(key+' '+s),querySelectorAll:()=>[],
       get innerHTML(){return html;},set innerHTML(value){html=value;if(key==='#quiz')answerButtons=[0,1,2,3].map(index=>({dataset:{answer:String(index)},disabled:false,classList:{add(){}},setAttribute(){}}));}
     };elements.set(key,e);return e;
@@ -20,7 +20,7 @@ function page(storage,copyMode='manual'){
     querySelector:s=>/^\[data-answer="(\d)"\]$/.test(s)?answerButtons[Number(s.match(/\d/)[0])]:element(s),
     querySelectorAll:s=>s==='#quiz button'?answerButtons:[],
     addEventListener:(name,fn)=>(listeners[name]??=[]).push(fn),
-    execCommand:()=>{if(copyMode==='fallback'){copiedText=element('#share-dialog textarea').value;return true;}throw Error('Clipboard unavailable');}};
+    execCommand:()=>{if(copyMode==='fallback'){copiedText=document.activeElement.value;return true;}throw Error('Clipboard unavailable');}};
   const localStorage={getItem:k=>storage.get(k)??null,setItem:(k,v)=>storage.set(k,v)};
   const sandbox={window:{},document,localStorage,URL,URLSearchParams,
     matchMedia:()=>({matches:false,addEventListener(){}}),scrollTo(){scrolls++;},addEventListener(){},confirm:()=>true,
@@ -107,4 +107,14 @@ const selectedCode=Object.keys(JSON.parse(storage.get('gamebti-collection-v2')).
 selectedShare.action('copy-link',selectedCode);await new Promise(resolve=>setImmediate(resolve));
 assert.ok(selectedShare.copied().endsWith('#meet='+selectedCode));
 assert.equal(JSON.stringify(selectedShare.saved()),unchanged,'Sharing a collected card preserves the current run');
-console.log('Verified real app click handlers: automatic advance, double-click guard, previous/edit, refresh/resume, result rendering, finish gate, continue/exhaustion, collection unlock and legacy save preservation (DOM stubs, not a visual browser test).');
+for(const mode of ['clipboard','fallback','manual']){
+  const siteStore=new Map(),site=page(siteStore,mode);assert.equal(site.copied(),'','Page load must not touch the clipboard');
+  site.action('share-site');await new Promise(resolve=>setImmediate(resolve));
+  const field=site.element('#site-share-dialog textarea'),status=site.element('#site-share-dialog .site-share-status');
+  const invite='来测测你是哪种玩家，看看咱俩像不像！\nhttps://gamebti.app.workbuddy.host/?sharecode=UVPWTOVNVN';
+  assert.equal(site.element('#site-share-dialog').open,true);assert.equal(field.value,invite);assert.ok(!field.value.includes('#meet='));assert.equal(siteStore.has('gamebti-rounds-save-v2'),false);
+  if(mode==='manual'){assert.equal(field.hidden,false);assert.match(status.textContent,/长按/);}
+  else{assert.equal(site.copied(),invite);assert.equal(field.hidden,true);assert.match(status.textContent,/已复制/);}
+  site.action('copy-site');await new Promise(resolve=>setImmediate(resolve));assert.equal(field.value,invite);
+}
+console.log('Verified app flow, card sharing and website poster invitation copying, legacy/manual clipboard fallbacks and unchanged test progress (DOM stubs).');

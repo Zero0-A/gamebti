@@ -12,3 +12,5 @@ Toast 沿用远程刚加入的 popover top layer 机制，兼容回退到 dialog
 验证：42 个二维码均使用独立 jsQR 解码器还原出正确 WorkBuddy 地址；实际导出的卡图及缩小为 900×1260 的卡图均解码成功。实测 WorkBuddy 链接能直接打开探险者领取弹窗。重复领取仍为 1/42，复制提示在卡图弹窗内且位于手机视口中。原有 npm 检查通过。
 
 WorkBuddy 需要发布包含 share.js、share.css、vendor/qrcodegen.js 的完整 dist 目录，不能只更新 app.js。如更换公开地址或 sharecode，需更新 gamebti-share-url 后重新发布。
+
+首页主按钮下方的“喊搭子来测测”展示 `assets/site-poster.png`（用户提供的原海报），并在点击时复制“来测测你是哪种玩家，看看咱俩像不像！”加首页链接。打开网页时不会自行复制。邀请不带人格领取编号；复制受限时显示可长按复制的文字。海报可下载或在手机上长按保存。
