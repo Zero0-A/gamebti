@@ -5,6 +5,6 @@
   "description": "GameBTI 趣味游戏人格测试",
   "scripts": {
     "start": "node server.mjs",
-    "check": "node --check dist/app.js && node --check dist/data.js && node --check dist/collection.js && node verify.mjs && node verify-collection.mjs"
+    "check": "node --check dist/app.js && node --check dist/data.js && node --check dist/collection.js && node --check dist/round-content.js && node --check dist/rounds.js && node verify.mjs && node verify-collection.mjs && node verify-rounds.mjs && node verify-round-ui.mjs"
   }
 }
