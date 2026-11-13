@@ -19,6 +19,7 @@
   <script src="app.js" defer></script>
   <link rel="stylesheet" href="share.css">
   <link rel="stylesheet" href="mobile-refinements.css">
+  <link rel="stylesheet" href="community.css">
 </head>
 <body data-screen="home">
   <header class="header wrap">
@@ -81,6 +82,7 @@
       <div class="ticker" aria-label="打不过，先去钓个鱼"><span>这把真是最后一把</span><span class="ticker-star"><img class="whale-mark" src="assets/whale-mark.svg" width="24" height="18" alt=""></span><span>等我捡完这些东西</span><span class="ticker-star"><img class="whale-mark" src="assets/whale-mark.svg" width="24" height="18" alt=""></span><span>怎么又是我来救人</span><span class="ticker-star"><img class="whale-mark" src="assets/whale-mark.svg" width="24" height="18" alt=""></span><span>打不过，先去钓个鱼</span><span class="ticker-star"><img class="whale-mark" src="assets/whale-mark.svg" width="24" height="18" alt=""></span><span class="mono">JUST PLAY YOUR WAY</span></div>
       <section class="players-section" aria-labelledby="players-heading"><div class="section-heading"><div><div class="section-kicker mono">YOUR PLAYER COLLECTION</div><h2 id="players-heading">看看你收集了<span>哪些人格</span></h2></div><button data-action="collection" class="text-link">打开我的图鉴 <span>↗</span></button></div><div class="player-grid" id="featured-players"></div></section>
       <div class="how-it-works"><span><b class="mono">01</b> 想想你平时怎么玩</span><span class="step-line"></span><span><b class="mono">02</b> 选你真的会做的事</span><span class="step-line"></span><span><b class="mono">03</b> 看看结果像不像你</span><span class="how-note">不用打得厉害，照实选就行。</span></div>
+      <section class="community-section" aria-label="关于我们"><div class="community-copy"><button class="community-about" data-action="community">关于我们 <span aria-hidden="true">↗</span></button><p>溯游工作室</p><span>欢迎加入迎新群</span><small>QQ群：769481120</small></div><button class="community-qr-thumb" data-action="community" aria-label="放大迎新群二维码"><span class="community-qr-crop"><img src="assets/community-welcome.jpg" alt="" loading="lazy" decoding="async"></span></button></section>
     </section>
     <section id="quiz" class="screen wrap quiz-screen" hidden></section>
     <section id="result" class="screen wrap result-screen" hidden></section>
@@ -91,6 +93,7 @@
   <dialog id="about-dialog" class="about-dialog" aria-labelledby="about-title"><button class="close-button" data-action="close" aria-label="关闭说明">×</button><span class="section-kicker mono">ABOUT GAMEBTI</span><h2 id="about-title">GameBTI<br>是什么？</h2><p>GameBTI 是一个从游戏习惯出发的趣味人格测试，想看看你在游戏里是个什么样的人。</p><p>开黑时爱带队，逛地图总想拐个弯，还是每次都惦记着把家盖好？这些平时不太留意的小习惯，都是你的玩家性格。</p><p>这里用 42 种玩家人格，给不同的玩法起个名字。它们可以同时存在：你既可以是爱探险的探险者，也可以是照顾队友的兜底者。</p><div class="about-note">溯游工作室 · 仅供娱乐</div><button class="button button-dark" data-action="start">测测我的玩家人格 <span>↗</span></button></dialog>
   <dialog id="rules-dialog" class="about-dialog" aria-labelledby="rules-title"><button class="close-button" data-action="close" aria-label="关闭游戏规则">×</button><span class="section-kicker mono">HOW TO PLAY</span><h2 id="rules-title">你的玩法，<br>不只一种。</h2><p>测试分轮进行，每轮答完 12 道题，就能看到一个人格结果。先玩满三轮，之后想结束或再试一轮都可以，最多能玩六轮。</p><p>同一局不会重复出题，也不会给你相同的人格。没空一次玩完的话，可以先回大厅，下次再接着答。</p><div class="about-note">仅供娱乐</div><button class="button button-dark" data-action="start">开始测试 <span>↗</span></button></dialog>
   <dialog id="site-share-dialog" class="site-share-dialog" aria-labelledby="site-share-title"><div class="dialog-top"><h2 id="site-share-title">喊搭子来测测</h2><button class="close-button" data-action="close" aria-label="关闭网站分享">×</button></div><img class="site-share-poster" src="assets/site-poster.png" width="2483" height="3512" alt="GameBTI 玩家人格测试邀请海报，扫码开测"><div class="site-share-actions"><a class="button button-dark" href="assets/site-poster.png" download="GameBTI-邀请海报.png">保存海报 ↓</a><button class="button button-outline" data-action="copy-site">复制链接 ↗</button></div><p class="site-share-status" role="status" aria-live="polite"></p><textarea class="site-invitation" aria-label="网站邀请文案和网址" readonly hidden></textarea></dialog>
+  <dialog id="community-dialog" class="community-dialog" aria-labelledby="community-title"><div class="dialog-top"><h2 id="community-title">关于我们</h2><button class="close-button" data-action="close" aria-label="关闭关于我们">×</button></div><div class="community-image-view"><img src="assets/community-welcome.jpg" alt="溯游工作室迎新群二维码，QQ群769481120" width="1284" height="2283"></div><a class="button button-dark community-save" href="assets/community-welcome.jpg" download="溯游工作室-迎新群二维码.jpg">保存二维码 ↓</a><p class="community-save-note">也可以长按图片保存到相册</p></dialog>
   <div id="toast" popover="manual" role="status" aria-live="polite" aria-atomic="true"></div>
 </body>
 </html>
