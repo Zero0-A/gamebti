@@ -37,7 +37,7 @@ function page(storage,copyMode='manual'){
   return {element,action,choose,flush,scrolls:()=>scrolls,copied:()=>copiedText,selections:()=>selections,resultType:code=>click({dataset:{resultType:code},disabled:false}),resume:()=>element('#resume-button').events.click(),saved:()=>JSON.parse(storage.get('gamebti-rounds-save-v2'))};
 }
 const storage=new Map([['gamebti-behaviors-save-v2','legacy-answer-sentinel'],['gamebti-save-v1','older-answer-sentinel'],['gamebti-rounds-save-v1','previous-rounds-sentinel']]);
-let p=page(storage);p.action('start');
+let p=page(storage);assert.equal(p.element('#resume-button').hidden,false);assert.equal(p.element('#resume-button').disabled,true);p.action('start');
 assert.match(p.element('#quiz').innerHTML,/1 \/ 12/);
 assert.ok(!p.element('#quiz').innerHTML.includes('data-action="next"'));
 p.choose(0);p.choose(1);assert.equal(p.saved().rounds[0].answers.length,1);p.flush();
@@ -45,7 +45,7 @@ assert.match(p.element('#quiz').innerHTML,/2 \/ 12/);
 p.action('previous');assert.match(p.element('#quiz').innerHTML,/1 \/ 12/);
 p.choose(2);p.flush();assert.equal(p.saved().rounds[0].answers[0],2);
 const beforeRefresh=p.element('#quiz').innerHTML;
-p.action('home');p=page(storage);p.resume();assert.match(p.element('#quiz').innerHTML,/2 \/ 12/);
+p.action('home');assert.equal(p.element('#resume-button').disabled,false);p=page(storage);assert.equal(p.element('#resume-button').disabled,false);p.resume();assert.match(p.element('#quiz').innerHTML,/2 \/ 12/);
 assert.equal(p.element('#quiz').innerHTML,beforeRefresh,'Refresh must preserve the exact question and option order');
 for(let n=1;n<=6;n++){
   const already=p.saved().rounds.at(-1).answers.length;

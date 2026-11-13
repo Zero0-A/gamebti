@@ -18,7 +18,7 @@
   function showScreen(next){clearTimeout(answerTimer);answerTimer=null;screen=next;document.body.dataset.screen=next;['home','quiz','result'].forEach(id=>$('#'+id).hidden=id!==next);scrollTo({top:0,behavior:'instant'});$('#main').focus({preventScroll:true});if(next==='home')updateResume();}
   function save(){try{localStorage.setItem(saveKey,JSON.stringify(session));}catch{notify('进度没能保存下来，你可以继续答，但关掉页面后可能需要重新开始。');}}
   function readSave(){try{return rounds.restore(JSON.parse(localStorage.getItem(saveKey)));}catch{return null;}}
-  function updateResume(){const s=readSave();$('#resume-button').hidden=!s;$('#resume-button').textContent=!s?'':s.stage==='quiz'?`继续第 ${s.rounds.length} 轮 · 第 ${rounds.active(s).index+1} / 12 题 →`:s.stage==='ended'?'查看本局获得的人格 →':`查看第 ${s.rounds.length} 轮结果，继续探索 →`;}
+  function updateResume(){const s=readSave(),button=$('#resume-button');button.hidden=false;button.disabled=!s;}
   function start(){
     const old=readSave();if(old&&old.stage!=='ended'&&!confirm('开始新的一局？当前这局进度会被替换，已解锁的图鉴会保留。'))return;
     closeDialogs();session=rounds.create();result=null;save();renderQuiz();showScreen('quiz');
