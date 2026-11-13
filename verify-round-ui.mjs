@@ -11,12 +11,12 @@ function page(storage,copyMode='manual'){
     const e={dataset:{},style:{},hidden:false,open:false,disabled:false,textContent:'',
       classList:{add:v=>classes.add(v),remove:v=>classes.delete(v),toggle:(v,on)=>on?classes.add(v):classes.delete(v)},
       addEventListener:(name,fn)=>events[name]=fn,events,
-      setAttribute(){},focus(){},select(){selections++;},after(){},insertBefore(){},close(){e.open=false;},showModal(){e.open=true;},
+      append(child){child.parentElement=e;},contains:child=>child.parentElement===e,setAttribute(){},focus(){},select(){selections++;},after(){},insertBefore(){},close(){e.open=false;},showModal(){e.open=true;},
       querySelector:s=>element(key+' '+s),querySelectorAll:()=>[],
       get innerHTML(){return html;},set innerHTML(value){html=value;if(key==='#quiz')answerButtons=[0,1,2,3].map(index=>({dataset:{answer:String(index)},disabled:false,classList:{add(){}},setAttribute(){}}));}
     };elements.set(key,e);return e;
   }
-  const document={body:{dataset:{},classList:{add(){},remove(){}}},
+  const document={body:{append(child){child.parentElement=document.body;},dataset:{},classList:{add(){},remove(){}}},
     querySelector:s=>/^\[data-answer="(\d)"\]$/.test(s)?answerButtons[Number(s.match(/\d/)[0])]:element(s),
     querySelectorAll:s=>s==='#quiz button'?answerButtons:[],
     addEventListener:(name,fn)=>(listeners[name]??=[]).push(fn),
@@ -28,7 +28,7 @@ function page(storage,copyMode='manual'){
     location:{href:'http://127.0.0.1:4173/',hash:'',protocol:'http:'},
     setTimeout:(fn,ms)=>{timers.set(++timerId,{fn,ms});return timerId;},clearTimeout:id=>timers.delete(id)};
   vm.createContext(sandbox);
-  for(const file of ['data.js','round-content.js','rounds.js','collection.js','app.js'])vm.runInContext(readFileSync(new URL('./dist/'+file,import.meta.url),'utf8'),sandbox);
+  for(const file of ['data.js','round-content.js','rounds.js','collection.js','vendor/qrcode.js','share.js','app.js'])vm.runInContext(readFileSync(new URL('./dist/'+file,import.meta.url),'utf8'),sandbox);
   const click=b=>{const event={target:{closest:()=>b,tagName:'BUTTON'}};for(const fn of listeners.click)fn(event);};
   const action=(value,code)=>{const button={dataset:{action:value,...(code?{cardCode:code}:{})},disabled:false};click(button);return button;};
   const choose=i=>click(answerButtons[i]);
@@ -92,16 +92,16 @@ for(const mode of ['clipboard','fallback','manual']){
 for(const source of ['self','friend']){
   const shareStore=new Map([['gamebti-collection-v2',JSON.stringify({version:1,entries:{G015:{[source]:true}}})]]);
   const collection=page(shareStore,'clipboard');
-  collection.action('share','G015');await new Promise(resolve=>setImmediate(resolve));
+  collection.action('copy-link','G015');await new Promise(resolve=>setImmediate(resolve));
   assert.match(collection.copied(),/#meet=G015/,'Collection sharing works without a current result');
   assert.equal(shareStore.has('gamebti-rounds-save-v2'),false,'Sharing never creates a test session');
-  collection.action('share','G001');await new Promise(resolve=>setImmediate(resolve));
+  collection.action('copy-link','G001');await new Promise(resolve=>setImmediate(resolve));
   assert.match(collection.copied(),/#meet=G015/,'Locked cards cannot be shared');
 }
 const selectedShare=page(storage,'clipboard'),unchanged=JSON.stringify(selectedShare.saved());
 selectedShare.resume();
 const selectedCode=Object.keys(JSON.parse(storage.get('gamebti-collection-v2')).entries)[0];
-selectedShare.action('share',selectedCode);await new Promise(resolve=>setImmediate(resolve));
+selectedShare.action('copy-link',selectedCode);await new Promise(resolve=>setImmediate(resolve));
 assert.ok(selectedShare.copied().endsWith('#meet='+selectedCode));
 assert.equal(JSON.stringify(selectedShare.saved()),unchanged,'Sharing a collected card preserves the current run');
 console.log('Verified real app click handlers: automatic advance, double-click guard, previous/edit, refresh/resume, result rendering, finish gate, continue/exhaustion, collection unlock and legacy save preservation (DOM stubs, not a visual browser test).');
